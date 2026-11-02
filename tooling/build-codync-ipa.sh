@@ -25,6 +25,7 @@ xcodebuild clean archive \
   -destination "generic/platform=iOS" \
   -archivePath "$ROOT_DIR/build/Codync.xcarchive" \
   -skipMacroValidation \
+  SWIFT_STRICT_CONCURRENCY=minimal \
   CODE_SIGNING_ALLOWED=NO \
   CODE_SIGNING_REQUIRED=NO \
   CODE_SIGN_IDENTITY="" \

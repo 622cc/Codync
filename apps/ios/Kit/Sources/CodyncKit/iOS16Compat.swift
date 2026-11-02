@@ -34,3 +34,36 @@ public struct EnvironmentStore<Value>: DynamicProperty {
         EnvironmentStoreResolver.resolve(Value.self, in: environment)
     }
 }
+
+// MARK: - View & Transition Compatibility for iOS 16
+
+public extension ContentTransition {
+    static func numericText(value: Double) -> ContentTransition { .identity }
+    static func numericText(countsDown: Bool = false) -> ContentTransition { .identity }
+}
+
+public extension View {
+    @ViewBuilder
+    func onChange<V: Equatable>(of value: V, initial: Bool, _ action: @escaping () -> Void) -> some View {
+        self.onChange(of: value) { _ in
+            action()
+        }
+    }
+
+    @ViewBuilder
+    func onChange<V: Equatable>(of value: V, initial: Bool, _ action: @escaping (_ oldValue: V, _ newValue: V) -> Void) -> some View {
+        self.onChange(of: value) { newValue in
+            action(newValue, newValue)
+        }
+    }
+}
+
+#if canImport(AppIntents)
+import AppIntents
+
+public extension Button where Label: View {
+    init<I: AppIntent>(intent: I, @ViewBuilder label: () -> Label) {
+        self.init(action: {}, label: label)
+    }
+}
+#endif

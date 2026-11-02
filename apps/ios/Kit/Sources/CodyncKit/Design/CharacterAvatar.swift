@@ -167,21 +167,24 @@ struct DottedBody: View {
         let half = size / 2
         let lx = sin(pose.yaw) * 0.8, ly = 0.55, lz = cos(pose.yaw) * 0.5 + 0.6  // never fully behind
         let ll = (lx * lx + ly * ly + lz * lz).squareRoot()
-        return dots.map { d in
+        return dots.map { (d: Dot) -> Ink in
             let p = d.center
-            let u = (p.x - half) / half, v = (half - p.y) / half
-            let z = max(0.2, 1 - u * u - v * v).squareRoot()
-            let nl = (u * u + v * v + z * z).squareRoot()
-            var shade = 0.3 + 0.7 * max(0, (u * lx + v * ly + z * lz) / (nl * ll))
+            let u: CGFloat = (p.x - half) / half
+            let v: CGFloat = (half - p.y) / half
+            let z: CGFloat = max(0.2, 1 - u * u - v * v).squareRoot()
+            let nl: CGFloat = (u * u + v * v + z * z).squareRoot()
+            let dotProd: CGFloat = (u * lx + v * ly + z * lz) / (nl * ll)
+            var shade: CGFloat = 0.3 + 0.7 * max(0, dotProd)
             if let phase = pose.ripple {
-                let ripple = 0.5 + 0.5 * sin((u * u + v * v).squareRoot() * 9 - phase)
-                shade *= 0.6 + 0.4 * ripple
+                let dist: CGFloat = (u * u + v * v).squareRoot()
+                let ripple: CGFloat = 0.5 + 0.5 * sin(dist * 9 - phase)
+                shade *= (0.6 + 0.4 * ripple)
             }
-            return Ink(dot: d,
-                       radius: step * 0.42 * (0.55 + 0.45 * shade),
-                       ink: grid.cells < 13 ? 0.4 + 0.4 * shade : 0.2 + 0.4 * min(1, shade / 0.7),
-                       tint: shade > 0.6 ? (shade - 0.6) / 0.4 : 0,
-                       eye: eyeCols.contains(d.col) && eyeRows.contains(d.row))
+            let rad: CGFloat = step * 0.42 * (0.55 + 0.45 * shade)
+            let inkVal: CGFloat = grid.cells < 13 ? (0.4 + 0.4 * shade) : (0.2 + 0.4 * min(1, shade / 0.7))
+            let tintVal: CGFloat = shade > 0.6 ? ((shade - 0.6) / 0.4) : 0
+            let isEye: Bool = eyeCols.contains(d.col) && eyeRows.contains(d.row)
+            return Ink(dot: d, radius: rad, ink: inkVal, tint: tintVal, eye: isEye)
         }
     }
 
@@ -231,12 +234,16 @@ public struct CharacterShape: Shape {
         case "hex":
             var p = Path()
             for i in 0..<6 {
-                let a = Double(i) * .pi / 3 - .pi / 2
-                let pt = CGPoint(x: w / 2 + cos(a) * w * 0.49, y: h / 2 + sin(a) * h * 0.49)
+                let a = CGFloat(Double(i) * .pi / 3 - .pi / 2)
+                let px = w / 2 + cos(a) * w * 0.49
+                let py = h / 2 + sin(a) * h * 0.49
+                let pt = CGPoint(x: px, y: py)
                 i == 0 ? p.move(to: pt) : p.addLine(to: pt)
             }
             p.closeSubpath()
-            return p.strokedPath(.init(lineWidth: w * 0.08, lineJoin: .round)).union(p)
+            var res = p.strokedPath(.init(lineWidth: w * 0.08, lineJoin: .round))
+            res.addPath(p)
+            return res
         case "cloud":
             var p = Path()
             p.addEllipse(in: CGRect(x: 0, y: h * 0.3, width: w * 0.55, height: h * 0.55))

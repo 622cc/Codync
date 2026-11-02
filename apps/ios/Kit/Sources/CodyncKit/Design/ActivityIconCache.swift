@@ -46,7 +46,10 @@ public enum ActivityIconCache {
     public static func prune(context: String) throws {
         guard let directory = directory(context), FileManager.default.fileExists(atPath: directory.path) else { return }
         let files = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
-        var retained = Set(Activity<BotActivityAttributes>.activities.filter { $0.attributes.iconContext == context }.compactMap { $0.attributes.currentCustomIconName })
+        var retained = Set<String>()
+        if #available(iOS 16.1, *) {
+            retained = Set(Activity<BotActivityAttributes>.activities.filter { $0.attributes.iconContext == context }.compactMap { $0.attributes.currentCustomIconName })
+        }
         for file in files where file.lastPathComponent.hasPrefix("activity-") && file.pathExtension == "json" {
             let reference = try JSONDecoder().decode(ActivityReference.self, from: Data(contentsOf: file))
             if !reference.name.isEmpty { retained.insert(reference.name) }
