@@ -1,3 +1,4 @@
+#if false
 import AppIntents
 import CodyncKit
 import CodyncUI
@@ -60,3 +61,4 @@ struct BotShortcuts: AppShortcutsProvider {
                     shortTitle: "Send Text to Bot", systemImageName: "paperplane")
     }
 }
+#endif
