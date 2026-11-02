@@ -375,12 +375,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         let ctx = info["ctx"] as? String
         let computerId = info["computerId"] as? String
         let botId = info["botId"] as? String
-        let kind = AnalyticsEvent.NotificationKind(category: response.notification.request.content.categoryIdentifier)
+        let category = response.notification.request.content.categoryIdentifier
         // UIKit saves application state from this completion. The async delegate
         // bridge can complete off the main thread even after MainActor.run.
         Task { @MainActor in
             defer { completionHandler() }
-            if let kind { Analytics.shared.capture(.notificationOpened(kind)) }
+            if let kind = AnalyticsEvent.NotificationKind(category: category) {
+                Analytics.shared.capture(.notificationOpened(kind))
+            }
             guard let ctx, let computerId, let botId else { return }
             // Only open it in the account it was sent to, on a computer that account still has.
             let accounts = AppStore.shared.accounts
