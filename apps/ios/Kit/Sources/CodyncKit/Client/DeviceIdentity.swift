@@ -5,7 +5,7 @@ import os
 
 /// This app install's keys for one account context (§3.2): an Ed25519 device key that hosts
 /// authorize, and an X25519 push key that opens notification contents. Private keys stay in the Keychain.
-public struct DeviceIdentity: Sendable {
+public struct DeviceIdentity: @unchecked Sendable {
     /// Ed25519, b64url.
     public let publicKey: String
     /// X25519, b64url (§6.7).

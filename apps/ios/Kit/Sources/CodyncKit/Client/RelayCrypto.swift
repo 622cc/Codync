@@ -96,7 +96,7 @@ public enum RelayCrypto {
         sha256(label("codync/hs2/v1"), cid, dk, ekD, n, ekH)
     }
 
-    struct ChannelKeys {
+    struct ChannelKeys: @unchecked Sendable {
         var prk: Data
         var d2h: SymmetricKey
         var h2d: SymmetricKey
@@ -108,7 +108,7 @@ public enum RelayCrypto {
     }
 
     /// The device's half of one handshake: fresh ephemeral key and nonce each connection.
-    struct Handshake {
+    struct Handshake: @unchecked Sendable {
         let cid: Data
         let dk: Data
         let hostSignKey: Curve25519.Signing.PublicKey

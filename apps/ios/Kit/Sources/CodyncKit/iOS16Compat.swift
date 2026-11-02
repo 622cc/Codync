@@ -44,6 +44,13 @@ public extension ContentTransition {
 
 public extension View {
     @ViewBuilder
+    func onChange<V: Equatable>(of value: V, _ action: @escaping (_ oldValue: V, _ newValue: V) -> Void) -> some View {
+        self.onChange(of: value) { newValue in
+            action(newValue, newValue)
+        }
+    }
+
+    @ViewBuilder
     func onChange<V: Equatable>(of value: V, initial: Bool, _ action: @escaping () -> Void) -> some View {
         self.onChange(of: value) { _ in
             action()

@@ -39,7 +39,7 @@ public struct ThinkingOrb: View {
         .accessibilityHidden(true)
         .onAppear { epoch = .now; visible = true }
         .onDisappear { visible = false }
-        .onChange(of: running) { _, isRunning in if isRunning { epoch = .now } }
+        .onChange(of: running) { isRunning in if isRunning { epoch = .now } }
     }
 
     private func drawing(time: Double) -> some View {
