@@ -26,7 +26,7 @@ struct SkillRef: Identifiable {
 /// while it isn't installed.
 struct SkillSheet: View {
     let skill: SkillRef
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var markdown: String?
     @State private var error: String?
     @State private var adding = false

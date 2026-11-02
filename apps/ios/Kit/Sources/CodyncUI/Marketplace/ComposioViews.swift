@@ -27,7 +27,7 @@ struct ComposioConnectSheet: View {
     let app: ComposioApp
     var requestId: String? = nil
     let done: () -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     @Environment(\.openURL) private var openURL
     @State private var plan: ComposioConnect?

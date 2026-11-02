@@ -9,7 +9,7 @@ extension View {
 /// A scoped read receipt follows view visibility, rather than roster selection.
 private struct ReadingConversation: ViewModifier {
     let botId: String
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.scenePhase) private var scenePhase
     @State private var token = UUID()
     @State private var visible = false

@@ -8,8 +8,8 @@ import SwiftUI
 /// the same pin state and section. Dragging a computer's heading moves the computer with its bots;
 /// a section's heading folds its bots away and holds its menu.
 struct BotListView: View {
-    @Environment(AppStore.self) private var app
-    @Environment(AccountStore.self) private var accounts
+    @EnvironmentStore(AppStore.self) private var app
+    @EnvironmentStore(AccountStore.self) private var accounts
     @State private var creating: NewTarget?
     @State private var editing: EditTarget?
     @State private var editingGroup: GroupTarget?

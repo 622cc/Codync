@@ -12,8 +12,8 @@ extension View {
 /// Only the returned-to roster can present StoreKit; navigation/overlays cancel its one-shot delay.
 private struct ReviewInvitationModifier: ViewModifier {
     let blocked: Bool
-    @Environment(AppStore.self) private var app
-    @Environment(AccountStore.self) private var accounts
+    @EnvironmentStore(AppStore.self) private var app
+    @EnvironmentStore(AccountStore.self) private var accounts
     @Environment(\.scenePhase) private var phase
     @Environment(\.requestReview) private var requestReview
     private let invitation = ReviewInvitation.shared

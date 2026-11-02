@@ -7,7 +7,7 @@ struct ArtifactCard: View {
     let botId: String
     let ref: ArtifactRef
     let open: () -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     static let symbol = "chart.bar.doc.horizontal"

@@ -10,7 +10,7 @@ struct CallView: View {
     @Binding var isSpeaking: Bool
     @Binding var interrupt: (() -> Void)?
     let close: () -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var session: (any VoiceEngine)?
     @State private var callID = UUID()

@@ -5,8 +5,8 @@ import SwiftUI
 /// Computer management: every computer this iPhone can use or ask for — paired here and in the
 /// account, merged by computer ID — and the way to pair another.
 struct ComputersView: View {
-    @Environment(AppStore.self) private var app
-    @Environment(AccountStore.self) private var accounts
+    @EnvironmentStore(AppStore.self) private var app
+    @EnvironmentStore(AccountStore.self) private var accounts
     @Environment(\.dismissModal) private var dismissModal
     @State private var addingComputer = false
     @State private var confirmForget: Computer?
@@ -152,7 +152,7 @@ private struct ComputerRows: View {
     /// Set when this iPhone's access to the computer can be revoked.
     let revoke: (() -> Void)?
     let remove: () -> Void
-    @Environment(AccountStore.self) private var accounts
+    @EnvironmentStore(AccountStore.self) private var accounts
     @State private var coloring = false
     @State private var voiceSettings = false
     @State private var networkSheet = false
@@ -425,7 +425,7 @@ private extension ConnectionRoute {
 /// System permission gates the computer preference without changing its saved value.
 private struct ComputerNotificationsRow: View {
     let store: BotStore
-    @Environment(AppStore.self) private var app
+    @EnvironmentStore(AppStore.self) private var app
     @Environment(\.scenePhase) private var scenePhase
     @State private var allowed: Bool?
     @State private var checked = false

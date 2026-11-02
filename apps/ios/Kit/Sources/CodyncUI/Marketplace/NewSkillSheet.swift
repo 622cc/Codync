@@ -2,7 +2,7 @@ import CodyncKit
 import SwiftUI
 
 struct NewSkillSheet: View {
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     @State private var name = ""
     @State private var summary = ""

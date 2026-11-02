@@ -8,7 +8,7 @@ struct WelcomeView: View {
     /// Computers paired before sign-in was required; they move into the account at sign-in.
     var signedOutComputers = 0
     let start: () -> Void
-    @Environment(AccountSession.self) private var account
+    @EnvironmentStore(AccountSession.self) private var account
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// 0 = nothing yet … 4 = everything shown. Each beat enters in turn.
     @State private var beat = 0

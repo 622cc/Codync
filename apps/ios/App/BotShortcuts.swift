@@ -32,7 +32,7 @@ struct SendTextToBotIntent: ForegroundContinuableIntent {
     /// Runs in the background, also from Siri: a locked iPhone must not instruct a coding agent.
     static let authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
 
-    @available(iOS 26.0, *)
+    @available(iOS 18.0, *)
     static var supportedModes: IntentModes { [.background, .foreground(.dynamic)] }
 
     @Parameter(title: "Bot", requestValueDialog: "Which bot should receive the text?")
@@ -50,7 +50,7 @@ struct SendTextToBotIntent: ForegroundContinuableIntent {
 
     @MainActor func perform() async throws -> some IntentResult & ProvidesDialog {
         if openChat {
-            if #available(iOS 26.0, *) {
+            if #available(iOS 18.0, *) {
                 try await continueInForeground(alwaysConfirm: false)
             } else {
                 try await requestToContinueInForeground()

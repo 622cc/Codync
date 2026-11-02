@@ -4,9 +4,9 @@ import SwiftUI
 import WidgetKit
 
 struct RootView: View {
-    @Environment(AppStore.self) private var app
-    @Environment(AccountStore.self) private var accounts
-    @Environment(AccountSession.self) private var account
+    @EnvironmentStore(AppStore.self) private var app
+    @EnvironmentStore(AccountStore.self) private var accounts
+    @EnvironmentStore(AccountSession.self) private var account
     @AppStorage("onboardingCompleted") private var onboardingCompleted = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// First launch only: past the welcome, on to setup.
@@ -157,7 +157,7 @@ struct RootView: View {
 /// A conversation, talking to the computer the bot lives on.
 private struct ChatScreen: View {
     let ref: BotReference
-    @Environment(AccountStore.self) private var accounts
+    @EnvironmentStore(AccountStore.self) private var accounts
 
     var body: some View {
         if let store = accounts.store(for: ref.computerId) {
@@ -179,7 +179,7 @@ private struct ChatScreen: View {
 private struct StateTab: View {
     enum Surface: Hashable { case widget, liveActivity, island }
 
-    @Environment(AppStore.self) private var app
+    @EnvironmentStore(AppStore.self) private var app
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     // Screenshots: CODYNC_STATE_SURFACE=widget|liveActivity|island opens the tab on that gallery.
     @State private var surface: Surface = {
@@ -227,8 +227,8 @@ private struct StateTab: View {
 
 /// Usage for one computer at a time: the last active one, which the Usage widget shows too.
 private struct UsageSheet: View {
-    @Environment(AppStore.self) private var app
-    @Environment(AccountStore.self) private var accounts
+    @EnvironmentStore(AppStore.self) private var app
+    @EnvironmentStore(AccountStore.self) private var accounts
     @Environment(\.dismissModal) private var dismiss
     /// Picked here; also becomes the computer the Usage widget shows.
     @State private var picked: ComputerID?
@@ -360,7 +360,7 @@ private extension View {
 
 /// Access requests still waiting after their sheet closed: the code to check, until the computer answers.
 private struct AccessBanners: View {
-    @Environment(AccountStore.self) private var accounts
+    @EnvironmentStore(AccountStore.self) private var accounts
 
     var body: some View {
         VStack(spacing: 8) {

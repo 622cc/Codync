@@ -1,3 +1,4 @@
+import Perception
 import AVFoundation
 import CodyncKit
 import Foundation
@@ -10,7 +11,7 @@ private let log = Logger(subsystem: "com.pokai.Codync", category: "Call")
 /// transcribed with the provider's speech-to-text, and sent as an ordinary message; the bot's
 /// replies are read aloud with its text-to-speech. Both go through the computer, which holds the key.
 @MainActor
-@Observable
+@Perceptible
 final class CloudSpeechEngine: VoiceEngine {
     private(set) var phase: VoicePhase = .starting {
         didSet { onActivityChanged?(!ended && phase.holdsCall) }

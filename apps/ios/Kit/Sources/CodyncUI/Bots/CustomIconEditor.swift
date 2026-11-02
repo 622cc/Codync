@@ -4,7 +4,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct CustomIconEditor: View {
-    @Environment(BotStore.self) private var store
+    @EnvironmentStore(BotStore.self) private var store
     @Environment(\.customIconAccount) private var account
     @State private var needsSignIn = false
     let target: String

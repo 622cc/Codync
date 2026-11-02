@@ -6,7 +6,7 @@ struct RoutineEditorView: View {
     let routine: Routine?
     /// Called after a save (the routine) or a delete (nil).
     let saved: (Routine?) -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var name = ""
     @State private var instruction = ""

@@ -7,7 +7,7 @@ struct LibraryView: View {
     let botId: String
     /// Opens an artifact in the chat's viewer (the details sheet closes first).
     let openArtifact: (ArtifactTarget) -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// The files shared in the chat; its artifacts come from the store, where their events keep them current.
     @State private var files: [ChatLibraryItem] = []

@@ -1,8 +1,9 @@
+import Perception
 import CodyncKit
 import Foundation
 import Observation
 
-@MainActor @Observable
+@MainActor @Perceptible
 final class IconEditor {
     var busy = false
     var error: String?

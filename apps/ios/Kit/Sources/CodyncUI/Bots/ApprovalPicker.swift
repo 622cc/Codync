@@ -9,7 +9,7 @@ struct ApprovalPicker: View {
     @Binding var draft: BotDraft
     /// The model picker's Retry, so a list that failed the first time fills both.
     var reload = 0
-    @Environment(BotStore.self) private var store
+    @EnvironmentStore(BotStore.self) private var store
     @State private var catalog: AgentModels?
 
     var body: some View {

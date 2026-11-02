@@ -6,7 +6,7 @@ import SwiftUI
 /// the same 6-digit code shows here and on the computer. The user approves there only if they match.
 struct AccessRequestView: View {
     let computer: CloudComputer
-    @Environment(AccountStore.self) private var accounts
+    @EnvironmentStore(AccountStore.self) private var accounts
     @Environment(\.dismissModal) private var dismiss
     @State private var error: String?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion

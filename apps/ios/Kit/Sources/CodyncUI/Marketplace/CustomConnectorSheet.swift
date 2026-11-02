@@ -5,7 +5,7 @@ import SwiftUI
 struct CustomConnectorSheet: View {
     private enum Mode: Hashable { case command, url, config }
 
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     @Environment(\.webAuthenticationSession) private var webAuthenticationSession
     @Environment(\.openURL) private var openURL

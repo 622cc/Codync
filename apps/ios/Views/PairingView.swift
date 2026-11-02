@@ -204,8 +204,8 @@ private struct CommandBlock: View {
 private struct ScanPage: View {
     let os: ComputerOS
     let paired: () -> Void
-    @Environment(AppStore.self) private var app
-    @Environment(AccountSession.self) private var account
+    @EnvironmentStore(AppStore.self) private var app
+    @EnvironmentStore(AccountSession.self) private var account
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL

@@ -1,9 +1,10 @@
+import Perception
 import Foundation
 import Observation
 import os
 
 /// The iPhone's StoreKit invitation state; never sent to the host or shared with widgets.
-@MainActor @Observable
+@MainActor @Perceptible
 public final class ReviewInvitation {
     public static let shared = ReviewInvitation()
     static let storageKey = "reviewInvitation.v1"

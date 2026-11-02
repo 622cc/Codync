@@ -5,7 +5,7 @@ import WidgetKit
 
 /// The State tab's Widget page. The installed widgets and these previews share their rendering components.
 struct WidgetGalleryView: View {
-    @Environment(AccountStore.self) private var accounts
+    @EnvironmentStore(AccountStore.self) private var accounts
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var page: Page?
     @Environment(\.scenePhase) private var scenePhase

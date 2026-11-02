@@ -7,7 +7,7 @@ public struct TraceView: View {
     let botId: String
 
     public init(botId: String) { self.botId = botId }
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     public var body: some View {
         let all = model.chat(botId)

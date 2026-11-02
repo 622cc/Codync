@@ -3,7 +3,7 @@ import CodyncUI
 import SwiftUI
 
 struct AccountSwitcherButton: View {
-    @Environment(AccountSession.self) private var account
+    @EnvironmentStore(AccountSession.self) private var account
 
     var body: some View {
         Button { account.showSwitcher = true } label: {
@@ -25,8 +25,8 @@ struct AccountSwitcherButton: View {
 
 /// Who you're signed in as, and the other accounts on this iPhone.
 struct AccountSwitcherView: View {
-    @Environment(AppStore.self) private var app
-    @Environment(AccountSession.self) private var account
+    @EnvironmentStore(AppStore.self) private var app
+    @EnvironmentStore(AccountSession.self) private var account
     @State private var confirmSignOut = false
     @State private var confirmDelete = false
     @State private var pairing = false

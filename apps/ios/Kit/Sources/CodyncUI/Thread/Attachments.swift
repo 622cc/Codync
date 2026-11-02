@@ -169,7 +169,7 @@ struct AttachmentImage: View {
     let maxPixels: Int
     var contentMode: ContentMode = .fit
     let load: @MainActor (BotStore) async -> Data?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var image: CGImage?
 
     init(file: Attachment, botId: String, maxPixels: Int, contentMode: ContentMode = .fit) {

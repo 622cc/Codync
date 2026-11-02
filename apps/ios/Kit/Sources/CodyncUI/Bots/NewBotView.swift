@@ -4,7 +4,7 @@ import SwiftUI
 /// A new bot, profile first (Grok Bot's Create New Bot): its avatar and name. Everything else
 /// starts on the usual defaults and is changed afterwards in the bot's Settings.
 public struct NewBotView: View {
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     @State private var draft = BotDraft()
     @State private var saving = false
@@ -78,7 +78,7 @@ private extension BotStore {
 /// A new group chat, laid out like a new bot: who's in it and its name. What it works on is set
 /// afterwards in the group editor.
 public struct NewGroupView: View {
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     @State private var name = ""
     @State private var members: [String] = []

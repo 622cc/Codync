@@ -18,7 +18,7 @@ struct ChatRow: View {
     var openArtifact: ((ArtifactRef) -> Void)?
     /// A voice call's line: the call's conversation.
     var openCall: (() -> Void)?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -84,7 +84,7 @@ struct AuthorLabel: View {
     let botId: String?
     /// The name for an author that isn't one of this computer's bots (a bot on another computer).
     var name: String?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         let bot = botId.flatMap { model.bots[$0] }
@@ -118,7 +118,7 @@ struct UserBubble: View {
     let entry: Entry
     let botWorking: Bool
     var reply: (() -> Void)?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 4) {
@@ -193,7 +193,7 @@ struct AgentBubble: View {
     let openTrace: () -> Void
     var reply: (() -> Void)?
     var openArtifact: ((ArtifactRef) -> Void)?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -364,7 +364,7 @@ extension BotStore {
 /// the avatars of the bots that chose it.
 struct ReactionsRow: View {
     let entry: Entry
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         let mine = entry.data.reactions ?? []

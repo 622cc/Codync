@@ -1,3 +1,4 @@
+import Perception
 import CodyncKit
 import Foundation
 import Observation
@@ -11,7 +12,7 @@ private let log = Logger(subsystem: "com.pokai.Codync", category: "Screen")
 /// `input-fast` unordered for pointer moves). Signaling goes through the host
 /// API, with full trickle ICE when the host and helper support it.
 @MainActor
-@Observable
+@Perceptible
 public final class ScreenSession {
     public enum Phase: Equatable {
         case connecting

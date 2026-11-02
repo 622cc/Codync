@@ -1,3 +1,4 @@
+import Perception
 import SwiftUI
 
 /// Keep fetched catalog metadata in memory. The Extensions tabs scroll through it.
@@ -19,7 +20,7 @@ struct MarketplacePage<Item: Identifiable> {
 
 /// The connector list Extensions scrolls through: the rows loaded so far and the registry cursor.
 /// The end of the list coming into view asks for more (`loadMore`).
-@MainActor @Observable
+@MainActor @Perceptible
 final class ConnectorCatalog<Item: Identifiable> {
     typealias Fetch = @MainActor (_ search: String, _ cursor: String?) async throws -> (items: [Item], next: String?)
 

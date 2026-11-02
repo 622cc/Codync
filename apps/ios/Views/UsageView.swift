@@ -4,7 +4,7 @@ import SwiftUI
 
 /// Usage limits (opened from the State tab): one card per provider, the tightest limit as a big bar, every limit listed below.
 struct UsageView: View {
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var collapsed: Set<String> = []
 
     var body: some View {

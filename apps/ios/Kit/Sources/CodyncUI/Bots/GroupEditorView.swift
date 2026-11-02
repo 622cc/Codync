@@ -4,7 +4,7 @@ import SwiftUI
 /// Change a group chat's name, what it's for and who's in it. Bots are picked like
 /// recipients: chips on top, a search, and the bots not in it yet.
 public struct GroupEditorView: View {
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     let groupId: String
     @State private var name: String

@@ -3,16 +3,13 @@ name: Codync
 options:
   bundleIdPrefix: com.pokai
   deploymentTarget:
-    iOS: "26.0"
+    iOS: "16.0"
     macOS: "14.0"
   createIntermediateGroups: true
   fileTypes:
     icon:
       file: true
 packages:
-  Clerk:
-    url: https://github.com/clerk/clerk-ios
-    exactVersion: 1.5.6
   CodyncKit:
     path: ios/Kit
   WebRTC:
@@ -151,16 +148,10 @@ targets:
       - ios/Widgets/OpenBotIntent.swift
       - ios/Widgets/CallControlIntents.swift
     dependencies:
-      - package: Clerk
-        product: ClerkKit
       - package: CodyncKit
         product: CodyncKit
       - package: CodyncKit
         product: CodyncUI
-      - target: Widgets
-        embed: true
-      - target: NotificationService
-        embed: true
     postBuildScripts:
       - name: Codync environment
         basedOnDependencyAnalysis: false
@@ -192,42 +183,3 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         # Black / white instead of the system blue in menus, alerts and system sheets.
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
-  Widgets:
-    type: app-extension
-    platform: iOS
-    sources:
-      - ios/Widgets
-    dependencies:
-      - package: CodyncKit
-        product: CodyncKit
-      - sdk: WidgetKit.framework
-      - sdk: SwiftUI.framework
-    settings:
-      base:
-        PRODUCT_NAME: CodyncWidgets
-        PRODUCT_BUNDLE_IDENTIFIER: $(CODYNC_IOS_BUNDLE_ID).LiveActivity
-        INFOPLIST_FILE: ios/Widgets/Resources/Info.plist
-        GENERATE_INFOPLIST_FILE: YES
-        CODE_SIGN_ENTITLEMENTS: ios/Widgets/Resources/Widgets.entitlements
-        INFOPLIST_KEY_CFBundleDisplayName: $(CODYNC_APP_NAME)
-        TARGETED_DEVICE_FAMILY: "1,2"
-        SKIP_INSTALL: YES
-  # Opens end-to-end sealed alert text (spec §6.7) with this account's push key from the shared Keychain.
-  NotificationService:
-    type: app-extension
-    platform: iOS
-    sources:
-      - ios/NotificationService
-    dependencies:
-      - package: CodyncKit
-        product: CodyncKit
-    settings:
-      base:
-        PRODUCT_NAME: CodyncNotificationService
-        PRODUCT_BUNDLE_IDENTIFIER: $(CODYNC_IOS_BUNDLE_ID).NotificationService
-        INFOPLIST_FILE: ios/NotificationService/Info.plist
-        GENERATE_INFOPLIST_FILE: YES
-        CODE_SIGN_ENTITLEMENTS: ios/NotificationService/NotificationService.entitlements
-        INFOPLIST_KEY_CFBundleDisplayName: $(CODYNC_APP_NAME)
-        TARGETED_DEVICE_FAMILY: "1,2"
-        SKIP_INSTALL: YES

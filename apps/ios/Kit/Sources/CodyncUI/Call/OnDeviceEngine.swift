@@ -1,3 +1,4 @@
+import Perception
 import AVFoundation
 import CodyncKit
 import NaturalLanguage
@@ -10,7 +11,7 @@ private let log = Logger(subsystem: "com.pokai.Codync", category: "Call")
 /// A hands-free voice loop with one bot, all on the phone: speech is transcribed on device,
 /// sent as an ordinary message, and the bot's final replies are read aloud. The host sees text only.
 @MainActor
-@Observable
+@Perceptible
 final class OnDeviceEngine: VoiceEngine {
     private(set) var phase: VoicePhase = .starting {
         didSet { onActivityChanged?(!ended && phase.holdsCall) }

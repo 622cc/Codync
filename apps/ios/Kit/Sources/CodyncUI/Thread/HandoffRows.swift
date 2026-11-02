@@ -5,7 +5,7 @@ import SwiftUI
 struct HandoffCardRow: View {
     let entry: Entry
     let card: HandoffCard
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var expanded = false
     @State private var editing = false
 
@@ -94,7 +94,7 @@ struct HandoffEditorView: View {
     let entry: Entry
     @State private var text: String
     @State private var saving = false
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
 
     init(entry: Entry, text: String) {

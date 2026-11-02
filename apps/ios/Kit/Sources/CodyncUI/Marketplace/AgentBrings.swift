@@ -4,7 +4,7 @@ import SwiftUI
 /// Skills, connectors, rules and plugins the agent already has, under Sign in on its sheet.
 struct AgentBrings: View {
     let backendId: String
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var gear: AgentGear?
     @State private var failed = false
     @State private var skills = false

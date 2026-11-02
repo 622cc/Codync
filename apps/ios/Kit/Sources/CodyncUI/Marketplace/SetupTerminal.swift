@@ -1,3 +1,4 @@
+import Perception
 import CodyncKit
 import SwiftTerm
 import SwiftUI
@@ -13,7 +14,7 @@ struct SetupTerminalView: View {
     var method: AuthMethod?
     /// Back to the agent's sheet (the terminal is a step inside it).
     let back: () -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.openURL) private var openURL
     @State private var session = TermSession()
 
@@ -79,7 +80,7 @@ struct SetupTerminalView: View {
 }
 
 /// One setup terminal on the host: keystrokes go up in order, output comes down.
-@MainActor @Observable
+@MainActor @Perceptible
 final class TermSession {
     private(set) var exitCode: Int?
     private(set) var error: String?

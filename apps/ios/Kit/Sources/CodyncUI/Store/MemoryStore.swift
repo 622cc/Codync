@@ -1,9 +1,10 @@
+import Perception
 import CodyncKit
 import Foundation
 import Observation
 
 /// One bot's memory, read-only: the bot changes it.
-@MainActor @Observable
+@MainActor @Perceptible
 final class MemoryStore {
     let botId: String
     private let client: () async throws -> HostClient

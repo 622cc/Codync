@@ -5,7 +5,7 @@ import UIKit
 struct FileDownloadCard: View {
     let entry: Entry
     let file: SharedFile
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var viewing = false
 
     var body: some View {

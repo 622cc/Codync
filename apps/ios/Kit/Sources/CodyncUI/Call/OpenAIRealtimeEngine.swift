@@ -1,3 +1,4 @@
+import Perception
 import AVFoundation
 import CodyncKit
 import Foundation
@@ -11,7 +12,7 @@ private let log = Logger(subsystem: "com.pokai.Codync", category: "Call")
 /// the model's voice plays from the remote track, and events (tools, replies) go over `oai-events`.
 /// The user's key stays on the computer, which mints the client secret; the host never sees audio.
 @MainActor
-@Observable
+@Perceptible
 final class OpenAIRealtimeEngine: VoiceEngine {
     private(set) var phase: VoicePhase = .starting {
         didSet { onActivityChanged?(!ended && phase.holdsCall) }

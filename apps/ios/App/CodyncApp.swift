@@ -1,3 +1,4 @@
+import Perception
 import CodyncKit
 import CodyncUI
 import SwiftUI
@@ -20,6 +21,13 @@ struct CodyncApp: App {
     @State private var launching = !AppStore.shared.accounts.computers.isEmpty
         && (AppStore.shared.accounts.accountId != nil || !AppStore.shared.account.isConfigured)
     init() {
+        // Register EnvironmentStore resolvers for iOS 16 compatibility
+        EnvironmentStoreResolver.register(AppStore.self) { _ in AppStore.shared }
+        EnvironmentStoreResolver.register(AccountStore.self) { _ in AppStore.shared.accounts }
+        EnvironmentStoreResolver.register(AccountSession.self) { _ in AppStore.shared.account }
+        EnvironmentStoreResolver.register(BotStore.self) { _ in AppStore.shared.currentStore }
+        EnvironmentStoreResolver.register(AppUpdates.self) { _ in AppUpdates.shared }
+
         // A tapped widget bot arrives as an intent, not a URL.
         OpenBotIntent.open = { AppStore.shared.open($0) }
         MuteCallIntent.run = { CallActivity.toggleMute(botId: $0) }
@@ -117,7 +125,7 @@ enum AppTab: Hashable { case bots, state, settings }
 /// One `AccountStore` per account context: switching accounts retires the old one so
 /// in-flight work can't land on another user's screen or storage.
 @MainActor
-@Observable
+@Perceptible
 final class AppStore {
     static let shared = AppStore()
     let account: AccountSession

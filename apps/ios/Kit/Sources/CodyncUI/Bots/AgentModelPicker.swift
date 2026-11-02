@@ -22,7 +22,7 @@ struct AgentModelPicker: View {
     private enum Stage { case closed, agents, models, settings }
     @State private var stage = Stage.closed
     @State private var query = ""
-    @Environment(BotStore.self) private var store
+    @EnvironmentStore(BotStore.self) private var store
     @State private var catalog: AgentModels?
     @State private var catalogScope: String?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion

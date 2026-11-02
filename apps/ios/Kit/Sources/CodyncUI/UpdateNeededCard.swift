@@ -1,3 +1,4 @@
+import Perception
 import CodyncKit
 import SwiftUI
 
@@ -21,7 +22,7 @@ public struct UpdateNeededCard: View {
     let store: BotStore
     let mismatch: VersionMismatch
     @Environment(\.appUpdate) private var appUpdate
-    @Environment(AppUpdates.self) private var appUpdates: AppUpdates?
+    @EnvironmentStore(AppUpdates.self) private var appUpdates: AppUpdates?
 
     public init(store: BotStore, mismatch: VersionMismatch) {
         self.store = store
@@ -138,8 +139,9 @@ public enum UpdateNeededText {
 /// What the App Store has, asked now and then (iPhone): the update notice greys out its button
 /// while the needed version is in review, and a newer release gets a dismissible reminder.
 @MainActor
-@Observable
+@Perceptible
 public final class AppUpdates {
+    public static let shared = AppUpdates()
     /// The version live in the App Store; nil until asked or when the lookup fails.
     public private(set) var store: String?
     @ObservationIgnored private var askedAt: Date?
@@ -215,7 +217,7 @@ public struct UpdateReminderCard: View {
 
 /// The App Store has a newer app (iPhone; needs `AppUpdates` in the environment).
 public struct AppUpdateReminder: View {
-    @Environment(AppUpdates.self) private var appUpdates: AppUpdates?
+    @EnvironmentStore(AppUpdates.self) private var appUpdates: AppUpdates?
     @Environment(\.appUpdate) private var appUpdate
 
     public init() {}

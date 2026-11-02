@@ -21,7 +21,7 @@ extension View {
 
 private struct ArtifactShareSheet: ViewModifier {
     @Binding var file: ArtifactFile?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     func body(content: Content) -> some View {
         content.codyncSheet(item: $file) { shared in
@@ -38,7 +38,7 @@ private struct ArtifactShareSheet: ViewModifier {
 /// version the bot publishes meanwhile replaces the one shown.
 struct ArtifactView: View {
     let target: ArtifactTarget
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var renaming: Artifact?

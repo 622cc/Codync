@@ -16,7 +16,7 @@ struct Composer: View {
     var onInterrupt: (() -> Void)?
     /// An artifact's viewer: every message is about the artifact (a reply to its card), from a draft of its own.
     var artifact: Artifact?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// The field owns its text; the store only keeps a copy. A field bound straight to the
     /// store loses a hardware keyboard's IME composition (Zhuyin, Pinyin, Kana) on iPad.

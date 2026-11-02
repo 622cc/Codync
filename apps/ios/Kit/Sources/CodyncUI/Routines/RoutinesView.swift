@@ -5,7 +5,7 @@ import SwiftUI
 struct RoutinesView: View {
     let botId: String
     var initialId: String?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var routines: [Routine] = []
     @State private var runs: [RoutineRun] = []

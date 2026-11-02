@@ -1,3 +1,4 @@
+import Perception
 import AVFoundation
 import CodyncKit
 import Speech
@@ -38,7 +39,7 @@ struct DictationService {
 /// pause, stops it; it uses the call's language setting. With a provider picked beside the mic, it
 /// records, and the pill's stop has the computer transcribe all of it with the user's key; the
 /// transcript goes after what's in the box by then.
-@MainActor @Observable
+@MainActor @Perceptible
 final class Dictation {
     private(set) var listening = false
     /// Recorded for a provider, waiting for its transcript.

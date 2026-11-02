@@ -5,7 +5,7 @@ import SwiftUI
 /// own notes when the user kept them on. The user changes memory by telling the bot.
 struct MemoryCard: View {
     let botId: String
-    @Environment(BotStore.self) private var host
+    @EnvironmentStore(BotStore.self) private var host
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @State private var memory: MemoryStore?
     @State private var section: Section = .bot

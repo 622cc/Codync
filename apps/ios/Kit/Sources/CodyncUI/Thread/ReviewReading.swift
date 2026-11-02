@@ -10,7 +10,7 @@ extension View {
 private struct ReviewReading: ViewModifier {
     let botId: String
     let unobscured: Bool
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.scenePhase) private var phase
 
     private struct Reading: Equatable {

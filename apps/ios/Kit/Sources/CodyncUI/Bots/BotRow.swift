@@ -3,7 +3,7 @@ import SwiftUI
 
 public struct BotRow: View {
     let bot: Bot
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     public init(bot: Bot) { self.bot = bot }
 

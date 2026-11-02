@@ -5,7 +5,7 @@ import SwiftUI
 /// Which lead Siri, the Action button and Open Live Mode without a bot call (`ShortcutBotQuery.lead`), shown once
 /// more than one computer has a lead. Automatic: the lead of the first computer in the list that has one.
 struct ShortcutLeadSettings: View {
-    @Environment(AppStore.self) private var app
+    @EnvironmentStore(AppStore.self) private var app
     /// A computer id, or empty for Automatic.
     @State private var chosen = SharedStore.activeContext.shortcutLeadComputer ?? ""
 

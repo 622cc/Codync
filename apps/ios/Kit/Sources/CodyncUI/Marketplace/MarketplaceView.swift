@@ -6,7 +6,7 @@ import SwiftUI
 /// registry as their end comes into view (`ConnectorCatalog`). Installing happens on that
 /// computer; each bot turns connectors and skills on in its settings.
 public struct MarketplaceView: View {
-    @Environment(BotStore.self) var model
+    @EnvironmentStore(BotStore.self) var model
     @State var search = ""
     @State var connectors = ConnectorCatalog<MarketConnector>()
     @State var skills: [MarketSkill] = []

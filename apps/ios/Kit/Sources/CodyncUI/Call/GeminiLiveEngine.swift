@@ -1,3 +1,4 @@
+import Perception
 import CodyncKit
 import Foundation
 import Observation
@@ -10,7 +11,7 @@ private let log = Logger(subsystem: "com.pokai.Codync", category: "Call")
 /// mints one-use ephemeral tokens on the user's key and writes the voice's instructions and tools, again for each
 /// session; a session the server ends (`goAway`) is resumed with a fresh one, and a dropped one is tried again.
 @MainActor
-@Observable
+@Perceptible
 final class GeminiLiveEngine: VoiceEngine {
     private(set) var phase: VoicePhase = .starting {
         didSet { onActivityChanged?(!ended && phase.holdsCall) }

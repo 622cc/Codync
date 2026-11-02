@@ -4,7 +4,7 @@ import SwiftUI
 struct FolderPicker: View {
     let start: String?
     let onPick: (String) -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var state = WorkspacePickerState()
     @State private var path: String?

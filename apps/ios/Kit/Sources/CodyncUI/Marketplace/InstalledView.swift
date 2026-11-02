@@ -4,7 +4,7 @@ import SwiftUI
 
 struct InstalledView: View {
     let back: () -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.webAuthenticationSession) private var webAuthenticationSession
     @Environment(\.openURL) private var openURL
     @State private var removing: Removal?

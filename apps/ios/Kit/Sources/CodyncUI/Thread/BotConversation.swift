@@ -10,7 +10,7 @@ struct BotChatTarget: Identifiable, Equatable {
 struct BotMessageRow: View {
     let group: BotExchangeGroup
     let open: () -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         let peer = model.bots[group.peerId]
@@ -45,7 +45,7 @@ struct BotPairTitle: View {
     let peerId: String
     /// The peer's name when it is on another computer.
     let peerName: String?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         HStack(spacing: 8) {
@@ -73,7 +73,7 @@ struct BotPairTitle: View {
 struct BotConversationView: View {
     let botId: String
     let peerId: String
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var fetched: [Entry]?
     @State private var error: String?
 

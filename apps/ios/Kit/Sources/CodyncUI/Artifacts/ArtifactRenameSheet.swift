@@ -4,7 +4,7 @@ import SwiftUI
 /// An artifact's new title; the computer trims it and every app shows it.
 struct ArtifactRenameSheet: View {
     let artifact: Artifact
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     @State private var title: String
     @State private var saving = false

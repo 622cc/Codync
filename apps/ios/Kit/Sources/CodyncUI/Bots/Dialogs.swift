@@ -13,7 +13,7 @@ public extension View {
 private struct DeleteBotConfirmation: ViewModifier {
     @Binding var bot: Bot?
     let onDeleted: () -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     func body(content: Content) -> some View {
         content.codyncDialog(

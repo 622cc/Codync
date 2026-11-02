@@ -6,7 +6,7 @@ import SwiftUI
 /// notification permission, analytics, Start over). Each computer's own settings (voice chat, push, connection, hidden bots) are in
 /// Computer management (`ComputersView`).
 struct SettingsView: View {
-    @Environment(AppStore.self) private var app
+    @EnvironmentStore(AppStore.self) private var app
     @Environment(\.openURL) private var openURL
     @Environment(\.scenePhase) private var scenePhase
     @State private var notificationsAllowed: Bool?

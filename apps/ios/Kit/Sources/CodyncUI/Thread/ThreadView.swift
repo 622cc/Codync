@@ -9,7 +9,7 @@ public struct ThreadView: View {
     let botId: String
 
     public init(botId: String) { self.botId = botId }
-    @Environment(BotStore.self) var model
+    @EnvironmentStore(BotStore.self) var model
     @State var showTrace = false
     /// The message the composer's next send quotes.
     @State var replyingTo: Entry?
@@ -251,7 +251,7 @@ struct ChatItem: Identifiable {
 /// The start of an empty group chat: who's in it and how the room works.
 struct GroupIntroCard: View {
     let group: Bot
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         VStack(spacing: 12) {
@@ -283,7 +283,7 @@ struct GroupIntroCard: View {
 
 struct IntroCard: View {
     let bot: Bot
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         VStack(spacing: 12) {

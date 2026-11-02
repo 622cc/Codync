@@ -102,7 +102,7 @@ private struct PauseRow: View {
 private struct ProviderVoiceSettings: View {
     let provider: VoiceProvider
     let dictationOnly: Bool
-    @Environment(BotStore.self) private var store
+    @EnvironmentStore(BotStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage private var mode: String
     @AppStorage(VoiceSettings.dictationEngineKey) private var dictationEngine = "device"

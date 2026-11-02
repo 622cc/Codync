@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "CodyncKit",
-    platforms: [.iOS("26.0")],
+    platforms: [.iOS("16.0")],
     products: [
         .library(name: "CodyncKit", targets: ["CodyncKit"]),
         .library(name: "CodyncUI", targets: ["CodyncUI"]),
@@ -14,9 +14,13 @@ let package = Package(
         // Terminal emulator for agent install and sign-in. 1.19+ adds a build-tool
         // plugin every Xcode build would have to trust.
         .package(url: "https://github.com/migueldeicaza/SwiftTerm.git", exact: "1.18.0"),
+        // Observation compatibility for iOS 16 and earlier
+        .package(url: "https://github.com/pointfreeco/swift-perception", exact: "1.4.1"),
     ],
     targets: [
-        .target(name: "CodyncKit", resources: [
+        .target(name: "CodyncKit", dependencies: [
+            .product(name: "Perception", package: "swift-perception"),
+        ], resources: [
             .copy("Resources/ThirdPartyNotices"),
             .copy("Resources/Languages/zh-Hans.json"),
             .copy("Resources/Languages/zh-Hant.json"),
@@ -33,6 +37,7 @@ let package = Package(
                 "CodyncKit",
                 .product(name: "WebRTC", package: "WebRTC"),
                 .product(name: "SwiftTerm", package: "SwiftTerm"),
+                .product(name: "Perception", package: "swift-perception"),
             ],
             resources: [.process("Resources")]
         ),

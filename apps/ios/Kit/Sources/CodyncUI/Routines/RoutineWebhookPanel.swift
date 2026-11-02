@@ -5,7 +5,7 @@ import SwiftUI
 struct RoutineWebhookPanel: View {
     let botId: String
     let routineId: String
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var webhook: RoutineWebhook?
     @State private var error: String?

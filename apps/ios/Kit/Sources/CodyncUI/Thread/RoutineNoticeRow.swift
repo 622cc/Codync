@@ -5,7 +5,7 @@ import SwiftUI
 struct RoutineNoticeRow: View {
     let entry: Entry
     let open: () -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         HStack(spacing: 8) {

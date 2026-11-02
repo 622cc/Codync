@@ -1,3 +1,4 @@
+import Perception
 import CodyncKit
 import Foundation
 import Observation
@@ -19,7 +20,7 @@ public enum SendProgress: Sendable {
 /// events stream (catch-up since `rev`, then live) over the encrypted channel.
 /// `AccountStore` holds one per computer.
 @MainActor
-@Observable
+@Perceptible
 public final class BotStore {
     public internal(set) var icons: [String: CustomIcon] = [:]
     var iconsRevision: Int64 = -1

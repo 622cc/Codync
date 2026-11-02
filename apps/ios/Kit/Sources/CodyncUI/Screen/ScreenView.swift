@@ -5,7 +5,7 @@ import UIKit
 /// The computer's screen, full screen on the phone. Opened from the roster (to use
 /// the computer) or from a bot's live chip (to watch it work, then take over).
 public struct ScreenView: View {
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// The bot being watched, when opened from its chat.

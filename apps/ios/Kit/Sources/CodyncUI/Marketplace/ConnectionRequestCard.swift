@@ -6,7 +6,7 @@ import SwiftUI
 struct ConnectionRequestCard: View {
     let entry: Entry
     let request: ConnectionRequest
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.webAuthenticationSession) private var webAuthenticationSession
     @Environment(\.openURL) private var openURL
     @State private var app: ComposioApp?
@@ -160,7 +160,7 @@ struct ConnectionRequestCard: View {
 }
 
 struct CredentialsView: View {
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var selected: InstalledConnector?
     @State private var token = ""
     @State private var status: CredentialStatus?
@@ -232,7 +232,7 @@ struct CredentialsView: View {
 
 /// Website and app logins bots type through the computer tool; passwords stay hidden.
 private struct LoginsSection: View {
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var logins: [SavedLogin] = []
     @State private var site = ""
     @State private var username = ""
@@ -301,7 +301,7 @@ private struct LoginsSection: View {
 
 private struct ConnectorCredentialEditor: View {
     let connector: InstalledConnector
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     @State private var fields: [String: String] = [:]
     @State private var saving = false

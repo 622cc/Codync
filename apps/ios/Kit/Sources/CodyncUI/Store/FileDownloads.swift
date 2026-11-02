@@ -1,3 +1,4 @@
+import Perception
 import CodyncKit
 import Foundation
 import Observation
@@ -10,7 +11,7 @@ protocol FileDownloadWriting: Sendable {
 
 extension FileDownload: FileDownloadWriting {}
 
-@MainActor @Observable
+@MainActor @Perceptible
 public final class FileDownloads {
     public enum State {
         case downloading(Int64), saved, failed(String)

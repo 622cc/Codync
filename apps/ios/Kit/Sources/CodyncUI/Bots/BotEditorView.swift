@@ -10,7 +10,7 @@ public struct EditorRequest: Identifiable {
 
 /// Edit a bot in a modal (iPhone): the settings form plus Close / Save.
 public struct BotEditorView: View {
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
     @State var draft: BotDraft
     @State private var saving = false
@@ -68,7 +68,7 @@ struct BotSettingsForm: View {
     let error: String?
     var scrolls = true
     var part: FormPart = .all
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var pickingFolder = false
     @State private var pickingAvatar = false

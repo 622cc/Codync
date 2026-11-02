@@ -32,7 +32,7 @@ struct CallLineRow: View {
 /// and back, which the chat itself leaves out.
 struct CallConversationView: View {
     let line: Entry
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     /// The call's own messages, which the chat this device holds may not reach back to; nil while they load.
     @State private var fetched: [Entry]?
     @State private var error: String?

@@ -5,7 +5,7 @@ import SwiftUI
 /// to add Codync's copy for all of them.
 struct NodeNotice: View {
     let add: () -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -47,7 +47,7 @@ struct AgentSheet: View {
     /// Opened from a chat's sign-in request, whose agent refused a turn: the agent is asked
     /// again however signed in it looked.
     var recheck = false
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var route: SetupRoute?
     @State private var auth: AgentAuth?
     @State private var checking = false
@@ -292,7 +292,7 @@ private struct AgentKeysForm: View {
     let saved: [String]
     let back: () -> Void
     let done: (AgentAuth) -> Void
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @State private var values: [String: String] = [:]
     @State private var saving = false
     @State private var error: String?

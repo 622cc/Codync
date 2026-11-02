@@ -11,7 +11,7 @@ extension Image {
 /// assistants may reach them.
 /// Changes are made at a computer. The computer is the `BotStore` in the environment.
 public struct NetworkSheet: View {
-    @Environment(BotStore.self) private var store
+    @EnvironmentStore(BotStore.self) private var store
 
     public init() {}
 

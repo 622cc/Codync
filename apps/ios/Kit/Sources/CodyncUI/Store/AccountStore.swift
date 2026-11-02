@@ -1,3 +1,4 @@
+import Perception
 import CodyncKit
 import Foundation
 import Observation
@@ -22,7 +23,7 @@ public struct RosterItem: Identifiable, Sendable {
 /// computer today. This structure stays because the relay, accounts and SSH are built on it and it
 /// works unchanged with a single computer; don't extend or polish multi-computer features for now.
 @MainActor
-@Observable
+@Perceptible
 public final class AccountStore {
     public let storage: SharedStore.Context
     public var accountId: String? { storage.accountID }

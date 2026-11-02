@@ -1,10 +1,11 @@
+import Perception
 import CodyncKit
 import SwiftUI
 
 /// A pull past the top of a chat: the arrow sweeps in with the pull and the refresh starts only
 /// when the reader lets go of a full circle, so a long pull never refreshes (or snaps back) under the
 /// finger. Only the indicator reads it, so a pull never re-renders the list.
-@MainActor @Observable final class PullToRefresh {
+@MainActor @Perceptible final class PullToRefresh {
     /// How far past the top a pull completes the circle.
     static let distance: CGFloat = 110
     /// Room kept open above the chat while it refreshes, for the indicator.

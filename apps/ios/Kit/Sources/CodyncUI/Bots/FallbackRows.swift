@@ -9,7 +9,7 @@ import SwiftUI
 struct FallbackBanner: View {
     let bot: Bot
     let step: AgentStep
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
 
     var body: some View {
         HStack(spacing: 10) {
@@ -37,7 +37,7 @@ struct FallbackList: View {
     @Binding var draft: BotDraft
     /// The saved bot: the fallback it's on and the agents resting.
     let bot: Bot?
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var adding = false
     @State private var explaining = false
@@ -132,7 +132,7 @@ struct AddFallbackSheet: View {
     let choices: [Backend]
     let add: (BotFallback) -> Void
     @State private var fallback: BotFallback
-    @Environment(BotStore.self) private var model
+    @EnvironmentStore(BotStore.self) private var model
     @Environment(\.dismissModal) private var dismiss
 
     init(choices: [Backend], add: @escaping (BotFallback) -> Void) {

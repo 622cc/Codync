@@ -1,8 +1,9 @@
+import Perception
 import CodyncKit
 import SwiftUI
 
 /// Request lifetime belongs to the picker: changing folders invalidates earlier responses.
-@MainActor @Observable
+@MainActor @Perceptible
 final class WorkspacePickerState {
     enum Mode { case recent, browse }
     var mode = Mode.recent
