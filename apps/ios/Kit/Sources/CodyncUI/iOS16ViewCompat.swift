@@ -203,13 +203,15 @@ public extension View {
 
 // MARK: - Animation Completion Backport for iOS 16
 
+@MainActor
 public func withAnimation<Result>(
     _ animation: Animation? = .default,
     _ body: () throws -> Result,
-    completion: @escaping () -> Void
+    completion: @escaping @MainActor () -> Void
 ) rethrows -> Result {
     let result = try withAnimation(animation, body)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+    Task { @MainActor in
+        try? await Task.sleep(nanoseconds: 350_000_000)
         completion()
     }
     return result
