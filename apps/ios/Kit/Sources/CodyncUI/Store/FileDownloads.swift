@@ -23,10 +23,10 @@ public final class FileDownloads {
     }
     public private(set) var states: [String: State] = [:]
     public var export: Export?
-    @ObservationIgnored private var exported: Export?
-    @ObservationIgnored private var tasks: [String: Task<Void, Never>] = [:]
-    @ObservationIgnored private let writer: any FileDownloadWriting
-    @ObservationIgnored private var retired = false
+    @PerceptionIgnored private var exported: Export?
+    @PerceptionIgnored private var tasks: [String: Task<Void, Never>] = [:]
+    @PerceptionIgnored private let writer: any FileDownloadWriting
+    @PerceptionIgnored private var retired = false
 
     public init() { writer = FileDownload() }
 

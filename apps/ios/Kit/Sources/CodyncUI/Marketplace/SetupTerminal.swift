@@ -84,14 +84,14 @@ struct SetupTerminalView: View {
 final class TermSession {
     private(set) var exitCode: Int?
     private(set) var error: String?
-    @ObservationIgnored weak var view: TerminalView?
-    @ObservationIgnored private var client: HostClient?
-    @ObservationIgnored private var term: String?
-    @ObservationIgnored private var size = (cols: 80, rows: 24)
-    @ObservationIgnored private var sentSize = (cols: 0, rows: 0)
-    @ObservationIgnored private let keys: AsyncStream<Data>.Continuation
-    @ObservationIgnored private let keyStream: AsyncStream<Data>
-    @ObservationIgnored private var typing: Task<Void, Never>?
+    @PerceptionIgnored weak var view: TerminalView?
+    @PerceptionIgnored private var client: HostClient?
+    @PerceptionIgnored private var term: String?
+    @PerceptionIgnored private var size = (cols: 80, rows: 24)
+    @PerceptionIgnored private var sentSize = (cols: 0, rows: 0)
+    @PerceptionIgnored private let keys: AsyncStream<Data>.Continuation
+    @PerceptionIgnored private let keyStream: AsyncStream<Data>
+    @PerceptionIgnored private var typing: Task<Void, Never>?
 
     init() {
         (keyStream, keys) = AsyncStream.makeStream()

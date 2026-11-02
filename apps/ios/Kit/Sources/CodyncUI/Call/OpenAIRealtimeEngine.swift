@@ -25,7 +25,7 @@ final class OpenAIRealtimeEngine: VoiceEngine {
         }
     }
     var provider: VoiceProvider? { .openAI }
-    @ObservationIgnored var onActivityChanged: ((Bool) -> Void)?
+    @PerceptionIgnored var onActivityChanged: ((Bool) -> Void)?
 
     private let model: String
     private let voice: String

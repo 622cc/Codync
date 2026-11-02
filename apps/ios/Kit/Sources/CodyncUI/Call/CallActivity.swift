@@ -9,7 +9,6 @@ private let log = Logger(subsystem: "com.pokai.Codync", category: "Call")
 /// progress from the computer. Uses the bot's activity if one is up (a task it was given), else starts one for the call.
 /// The call's fields live here: every update of the activity merges them in (`withCall`), and they go back on after
 /// the computer's pushes, which replace its state without them.
-@available(iOS 16.2, *)
 @MainActor
 public final class CallActivity {
     public typealias State = BotActivityAttributes.ContentState
@@ -51,6 +50,7 @@ public final class CallActivity {
     public static func isLive(botId: String) -> Bool { calls[botId] != nil }
 
     /// Whether a call started this activity itself.
+    @available(iOS 16.1, *)
     public static func started(_ activity: Activity<BotActivityAttributes>) -> Bool {
         calls[activity.attributes.botId]?.ownID == activity.id
     }
@@ -106,13 +106,16 @@ public final class CallActivity {
         Self.calls[attributes.botId] = nil
         let (botId, computerId, own) = (attributes.botId, attributes.computerId, ownID)
         Task.detached {
-            guard let activity = BotActivityAttributes.shown(botId: botId, computerId: computerId) else { return }
-            await Self.callEnded(on: activity, dismissNow: activity.id == own)
+            if #available(iOS 16.2, *) {
+                guard let activity = BotActivityAttributes.shown(botId: botId, computerId: computerId) else { return }
+                await Self.callEnded(on: activity, dismissNow: activity.id == own)
+            }
         }
     }
 
     /// A call is over on `activity`: one whose bot has nothing left to show ends (at once with `dismissNow`), and one
     /// with a task under way goes on without the call.
+    @available(iOS 16.2, *)
     public nonisolated static func callEnded(on activity: Activity<BotActivityAttributes>, dismissNow: Bool) async {
         let state = merge(activity.content.state, call: nil, since: nil)
         if ["idle", "completed", "error"].contains(state.status) {
@@ -132,6 +135,7 @@ public final class CallActivity {
 
     /// Puts the call on the bot's activity, with `activity` as its line if given, or starts one for the call.
     private func show(activity text: String? = nil) {
+        guard #available(iOS 16.2, *) else { return }
         let (botId, computerId) = (attributes.botId, attributes.computerId)
         guard Self.calls[botId] === self else { return }
         guard let shown = BotActivityAttributes.shown(botId: botId, computerId: computerId) else { return start() }
@@ -146,6 +150,7 @@ public final class CallActivity {
         }
     }
 
+    @available(iOS 16.2, *)
     private func start() {
         guard call != nil, BotActivityAttributes.mayStart else { return }
         let state = Self.merge(.init(status: "idle", activity: progress ?? "", startedAt: nil), call: call, since: startedAt,
@@ -162,6 +167,7 @@ public final class CallActivity {
     /// Follows the activity showing the call: a push from the computer replaces its state without the call's fields,
     /// which go back on, and its last one ends it, which gives the call its own activity (one the user swiped away
     /// stays away).
+    @available(iOS 16.2, *)
     private func follow(_ activity: Activity<BotActivityAttributes>) {
         guard followed?.id != activity.id else { return }
         followed?.tasks.forEach { $0.cancel() }

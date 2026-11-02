@@ -18,7 +18,7 @@ final class OnDeviceEngine: VoiceEngine {
     }
     var provider: VoiceProvider? { nil }
     /// Keep the transport attached while audio is active, even without a visible UI update.
-    @ObservationIgnored var onActivityChanged: ((Bool) -> Void)?
+    @PerceptionIgnored var onActivityChanged: ((Bool) -> Void)?
     /// What you're saying right now (live caption).
     private(set) var heard = ""
     /// The reply being read aloud.
@@ -37,7 +37,7 @@ final class OnDeviceEngine: VoiceEngine {
     private let recognizer = UserDefaults.standard.string(forKey: OnDeviceEngine.languageKey)
         .flatMap { $0.isEmpty ? nil : SFSpeechRecognizer(locale: Locale(identifier: $0)) } ?? SFSpeechRecognizer()
     /// Created when the microphone first opens: touching the audio system starts it.
-    @ObservationIgnored private lazy var engine = AVAudioEngine()
+    @PerceptionIgnored private lazy var engine = AVAudioEngine()
     /// The microphone tap is on.
     private var tapped = false
     private var request: SFSpeechAudioBufferRecognitionRequest?

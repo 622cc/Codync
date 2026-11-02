@@ -24,7 +24,7 @@ final class CloudSpeechEngine: VoiceEngine {
         }
     }
     let provider: VoiceProvider?
-    @ObservationIgnored var onActivityChanged: ((Bool) -> Void)?
+    @PerceptionIgnored var onActivityChanged: ((Bool) -> Void)?
 
     struct Speech {
         let transcribe: @MainActor (Data) async throws -> String
@@ -35,7 +35,7 @@ final class CloudSpeechEngine: VoiceEngine {
     private let speech: Speech
     private let chunk: Int
     /// Created when the microphone first opens: touching the audio system starts it.
-    @ObservationIgnored private lazy var engine = AVAudioEngine()
+    @PerceptionIgnored private lazy var engine = AVAudioEngine()
     private var audioRunning = false
     private var ended = false
     private var events: AudioSessionEvents?

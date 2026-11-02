@@ -103,7 +103,6 @@ private struct ConversationCollection: UIViewRepresentable {
             view.keyboardDismissMode = .interactive
             view.allowsSelection = false
             view.delegate = self
-            if #available(iOS 26, *) { view.topEdgeEffect.style = .soft }
             // Only the empty collection background; hosted rows arbitrate their own taps.
             let tap = UITapGestureRecognizer(target: view, action: #selector(ConversationCollectionView.dismissComposerKeyboard))
             tap.cancelsTouchesInView = false
@@ -202,7 +201,11 @@ private struct ConversationCollection: UIViewRepresentable {
 
         private func animate(_ animation: Animation?, _ changes: @escaping () -> Void) {
             if let animation, !reduceMotion {
-                UIView.animate(animation, changes: changes)
+                if #available(iOS 18.0, *) {
+                    UIView.animate(animation, changes: changes)
+                } else {
+                    UIView.animate(withDuration: 0.25, animations: changes)
+                }
             } else {
                 changes()
             }

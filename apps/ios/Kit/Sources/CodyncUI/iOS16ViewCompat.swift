@@ -97,10 +97,16 @@ public struct CompatMenuActionDismissBehavior: Sendable {
 public struct CompatSymbolEffect: Sendable {
     public static let pulse = CompatSymbolEffect()
     public static let bounce = CompatSymbolEffect()
+    public static let replace = CompatSymbolEffect()
 }
 
 public struct CompatSymbolEffectOptions: Sendable {
     public static let repeating = CompatSymbolEffectOptions()
+}
+
+public struct CompatScrollBounceBehavior: Sendable {
+    public static let basedOnSize = CompatScrollBounceBehavior()
+    public static let always = CompatScrollBounceBehavior()
 }
 
 public extension View {
@@ -118,5 +124,37 @@ public extension View {
     func defaultScrollAnchor(_ anchor: UnitPoint?) -> some View {
         self
     }
+
+    @_disfavoredOverload
+    func scrollBounceBehavior(_ behavior: CompatScrollBounceBehavior, axes: Axis.Set = [.vertical]) -> some View {
+        self
+    }
 }
+
+public extension ContentTransition {
+    @_disfavoredOverload
+    static func symbolEffect(_ effect: CompatSymbolEffect) -> ContentTransition {
+        .opacity
+    }
+}
+
+public extension ButtonStyle where Self == BorderedButtonStyle {
+    static var glass: BorderedButtonStyle { .bordered }
+}
+
+// MARK: - TextSelection & TextField Backport for iOS 16
+
+public struct TextSelection: Equatable, Sendable {
+    public enum Indices: Equatable, Sendable { case selection(Range<String.Index>) }
+    public var indices: Indices? { nil }
+    public init(insertionPoint: String.Index) {}
+}
+
+public extension TextField where Label == Text {
+    @_disfavoredOverload
+    init<S: StringProtocol>(_ title: S, text: Binding<String>, selection: Binding<TextSelection?>?, axis: Axis) {
+        self.init(title, text: text, axis: axis)
+    }
+}
+
 

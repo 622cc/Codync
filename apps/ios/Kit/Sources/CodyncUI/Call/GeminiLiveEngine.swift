@@ -25,9 +25,9 @@ final class GeminiLiveEngine: VoiceEngine {
         }
     }
     var provider: VoiceProvider? { .gemini }
-    @ObservationIgnored var onActivityChanged: ((Bool) -> Void)?
+    @PerceptionIgnored var onActivityChanged: ((Bool) -> Void)?
     /// Playback stopped reporting progress after the voice's turn, and the call went back to listening.
-    @ObservationIgnored var onStall: (() -> Void)?
+    @PerceptionIgnored var onStall: (() -> Void)?
 
     private let model: String
     private let voice: String

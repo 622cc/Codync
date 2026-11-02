@@ -78,7 +78,7 @@ public final class BotStore {
     public internal(set) var historyComplete: Set<String> = []
     var composerDrafts: [String: String] = [:]
     /// What was pasted into each draft, sent along so memory never takes it as the user's own words.
-    @ObservationIgnored var composerPasted: [String: [String]] = [:]
+    @PerceptionIgnored var composerPasted: [String: [String]] = [:]
     public let fileDownloads = FileDownloads()
     var artifacts = ArtifactCache()
     public var lastError: String?
@@ -89,7 +89,7 @@ public final class BotStore {
 
     /// A Shortcuts request, consumed by the matching conversation.
     public internal(set) var voiceCallRequest: String?
-    @ObservationIgnored var preparingVoiceCall: UUID?
+    @PerceptionIgnored var preparingVoiceCall: UUID?
 
     // Platform hooks (push registration, Live Activities, widgets).
     /// Each time the channel becomes ready.
@@ -109,9 +109,9 @@ public final class BotStore {
     var transport: (any HostTransport)?
     var retired = false
     /// Files of messages not delivered yet (by client nonce), kept for a retry.
-    @ObservationIgnored var outgoingFiles: [String: [OutgoingFile]] = [:]
+    @PerceptionIgnored var outgoingFiles: [String: [OutgoingFile]] = [:]
     /// Section moves shown but not answered yet, oldest first.
-    @ObservationIgnored var pendingSectionMoves: [SectionMove] = []
+    @PerceptionIgnored var pendingSectionMoves: [SectionMove] = []
 
     var rev: Int64 = 0
     var hostId: String?
@@ -123,12 +123,12 @@ public final class BotStore {
         let hear: @MainActor (CallCue) -> Void
         let end: @MainActor () -> Void
     }
-    @ObservationIgnored var voiceCalls: [UUID: VoiceCall] = [:]
+    @PerceptionIgnored var voiceCalls: [UUID: VoiceCall] = [:]
     /// The newest cue each call heard (`CallCue.seq`), kept across engine switches: a replayed one isn't said again.
-    @ObservationIgnored var heardCues: [UUID: Int64] = [:]
-    @ObservationIgnored var shortcutSends = 0
+    @PerceptionIgnored var heardCues: [UUID: Int64] = [:]
+    @PerceptionIgnored var shortcutSends = 0
     /// Calls whose end is still on its way to the computer.
-    @ObservationIgnored var callEnds = 0
+    @PerceptionIgnored var callEnds = 0
     var saveTask: Task<Void, Never>?
     var rewound = false
     /// Events stayed undecodable after the rewind.
@@ -143,7 +143,7 @@ public final class BotStore {
     public internal(set) var answering: [String: String] = [:]
 
     /// The chats on screen, by the view showing each.
-    @ObservationIgnored var readingViews: [UUID: String] = [:]
+    @PerceptionIgnored var readingViews: [UUID: String] = [:]
 
     var cacheStamp: String?
 
