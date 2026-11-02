@@ -1,3 +1,4 @@
+#if false
 import AppIntents
 import Foundation
 
@@ -63,3 +64,4 @@ public struct ShortcutBotQuery: EntityStringQuery {
         return ShortcutBotEntity(id: storage.botURL(ref).absoluteString, name: snapshot.bot.name, computerName: computer.name)
     }
 }
+#endif

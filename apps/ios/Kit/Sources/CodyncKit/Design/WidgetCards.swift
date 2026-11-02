@@ -1,4 +1,3 @@
-import AppIntents
 import SwiftUI
 
 /// Shared by the widget extension and its in-app gallery so previews use the
@@ -292,10 +291,10 @@ public extension Bot {
 /// empty spots hold a faded sleeping character.
 public struct BotsTeamCard: View {
     let slots: [Bot?]
-    let opens: [String: any AppIntent]
+    let opens: [String: String]
 
-    /// `opens` (bot id → the intent that opens its conversation) makes each spot a button.
-    public init(bots: [Bot], picks: [String?] = [], opens: [String: any AppIntent] = [:]) {
+    /// `opens` (bot id → link)
+    public init(bots: [Bot], picks: [String?] = [], opens: [String: String] = [:]) {
         slots = Self.slots(bots: bots, picks: picks)
         self.opens = opens
     }
@@ -323,13 +322,7 @@ public struct BotsTeamCard: View {
 
     @ViewBuilder private func tile(_ index: Int) -> some View {
         if let bot = slots[index] {
-            // A small widget has one tap target unless it uses buttons: each spot is a
-            // button that opens its bot's conversation.
-            if let open = opens[bot.id] {
-                Button(intent: open) { botTile(bot) }.buttonStyle(.plain)
-            } else {
-                botTile(bot)
-            }
+            botTile(bot)
         } else {
             CharacterAvatar(shape: "blob", color: "gray", size: 26)
                 .opacity(0.18)

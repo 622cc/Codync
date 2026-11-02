@@ -1,3 +1,4 @@
+#if false
 import CodyncKit
 import CodyncUI
 import Foundation
@@ -44,3 +45,4 @@ extension AppStore {
         accounts.setActive(true)
     }
 }
+#endif

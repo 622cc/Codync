@@ -83,13 +83,3 @@ public extension View {
         }
     }
 }
-
-#if canImport(AppIntents)
-import AppIntents
-
-public extension Button where Label: View {
-    init<I: AppIntent>(intent: I, @ViewBuilder label: () -> Label) {
-        self.init(action: {}, label: label)
-    }
-}
-#endif

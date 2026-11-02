@@ -27,11 +27,6 @@ struct CodyncApp: App {
         EnvironmentStoreResolver.register(AccountSession.self) { _ in AppStore.shared.account }
         EnvironmentStoreResolver.register(BotStore.self) { _ in AppStore.shared.currentStore }
         EnvironmentStoreResolver.register(AppUpdates.self) { _ in AppUpdates.shared }
-
-        // A tapped widget bot arrives as an intent, not a URL.
-        OpenBotIntent.open = { AppStore.shared.open($0) }
-        MuteCallIntent.run = { CallActivity.toggleMute(botId: $0) }
-        EndCallIntent.run = { CallActivity.hangUp(botId: $0) }
     }
 
     var body: some Scene {
