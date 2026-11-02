@@ -371,13 +371,12 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
 
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
                                           withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
         let info = response.notification.request.content.userInfo
         let ctx = info["ctx"] as? String
         let computerId = info["computerId"] as? String
         let botId = info["botId"] as? String
         let category = response.notification.request.content.categoryIdentifier
-        // UIKit saves application state from this completion. The async delegate
-        // bridge can complete off the main thread even after MainActor.run.
         DispatchQueue.main.async {
             MainActor.assumeIsolated {
                 if let kind = AnalyticsEvent.NotificationKind(category: category) {
@@ -391,7 +390,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
                     }
                 }
             }
-            completionHandler()
         }
     }
 
