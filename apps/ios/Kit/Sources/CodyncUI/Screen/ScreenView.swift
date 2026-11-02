@@ -350,7 +350,7 @@ public enum OrientationLock {
         pending = Task { @MainActor in
             guard (try? await Task.sleep(for: .milliseconds(100))) != nil else { return }
             let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
-            scenes.forEach(reloadMask)
+            for scene in scenes { reloadMask(scene) }
             guard let prefer else { return }
             guard (try? await Task.sleep(for: .milliseconds(150))) != nil else { return }
             // Best effort: turning the phone always works once the mask allows it.

@@ -138,10 +138,6 @@ public extension ContentTransition {
     }
 }
 
-public extension ButtonStyle where Self == BorderedButtonStyle {
-    static var glass: BorderedButtonStyle { .bordered }
-}
-
 // MARK: - TextSelection & TextField Backport for iOS 16
 
 public struct TextSelection: Equatable, Sendable {

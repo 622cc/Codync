@@ -409,7 +409,7 @@ struct ReactionsRow: View {
 /// iPhone: a row renders again only when what it shows changed, so a reply being written
 /// elsewhere in the chat skips it.
 extension ChatRow: Equatable {
-    static func == (a: Self, b: Self) -> Bool {
+    nonisolated static func == (a: Self, b: Self) -> Bool {
         a.entry == b.entry && a.groupStart == b.groupStart && a.chat?.isGroup == b.chat?.isGroup
             && a.chat?.isWorking == b.chat?.isWorking && (a.reply == nil) == (b.reply == nil)
     }

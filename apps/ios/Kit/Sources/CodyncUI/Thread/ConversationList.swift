@@ -406,18 +406,9 @@ struct JumpToLatest: View {
     }
 
     @ViewBuilder private var jumpButton: some View {
-        if #available(iOS 26, *) {
-            Button(L10n.tr("Jump to latest"), systemImage: "arrow.down", action: action)
-                .labelStyle(.iconOnly)
-                .font(.system(size: 18, weight: .medium))
-                .controlSize(.large)
-                .buttonStyle(.glass)
-                .buttonBorderShape(.circle)
-        } else {
-            Button(L10n.tr("Jump to latest"), systemImage: "arrow.down", action: action)
-                .labelStyle(.iconOnly)
-                .buttonStyle(IconButtonStyle())
-                .glass(in: Circle())
-        }
+        Button(L10n.tr("Jump to latest"), systemImage: "arrow.down", action: action)
+            .labelStyle(.iconOnly)
+            .buttonStyle(IconButtonStyle())
+            .glass(in: Circle())
     }
 }
