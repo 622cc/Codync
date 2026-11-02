@@ -9,10 +9,17 @@ struct ActivityGalleryView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.openURL) private var openURL
     @AppStorage(BotActivityAttributes.enabledKey) private var enabled = true
-    @State private var allowed = ActivityAuthorizationInfo().areActivitiesEnabled
+    @State private var allowed = Self.isAllowed
     @State private var form: BotActivityPreview.Form?
     @State private var phase = BotActivityPresentation.Phase.working
     @State private var startedAt = Date.now - 154
+
+    private static var isAllowed: Bool {
+        if #available(iOS 16.1, *) {
+            return ActivityAuthorizationInfo().areActivitiesEnabled
+        }
+        return false
+    }
 
     private var island: Bool { !forms.contains(.lockScreen) }
 
@@ -92,7 +99,7 @@ struct ActivityGalleryView: View {
         .tint(Palette.accent)
         .onChange(of: enabled) { _, value in if !value { LiveActivities.shared.endAll() } }
         .onChange(of: scenePhase) { _, value in
-            if value == .active { allowed = ActivityAuthorizationInfo().areActivitiesEnabled }
+            if value == .active { allowed = Self.isAllowed }
         }
     }
 

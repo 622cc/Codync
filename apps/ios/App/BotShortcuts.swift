@@ -25,15 +25,12 @@ struct OpenLiveModeIntent: AppIntent {
     }
 }
 
-struct SendTextToBotIntent: ForegroundContinuableIntent {
+struct SendTextToBotIntent: AppIntent {
     static let title: LocalizedStringResource = "Send Text to Bot"
     static let description = IntentDescription("Send text to a bot in the background. Optionally open its conversation. Finishes when the computer or its offline mailbox accepts the message.")
     static let openAppWhenRun = false
     /// Runs in the background, also from Siri: a locked iPhone must not instruct a coding agent.
     static let authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
-
-    @available(iOS 18.0, *)
-    static var supportedModes: IntentModes { [.background, .foreground(.dynamic)] }
 
     @Parameter(title: "Bot", requestValueDialog: "Which bot should receive the text?")
     var bot: ShortcutBotEntity
@@ -49,13 +46,6 @@ struct SendTextToBotIntent: ForegroundContinuableIntent {
     }
 
     @MainActor func perform() async throws -> some IntentResult & ProvidesDialog {
-        if openChat {
-            if #available(iOS 18.0, *) {
-                try await continueInForeground(alwaysConfirm: false)
-            } else {
-                try await requestToContinueInForeground()
-            }
-        }
         let progress = try await AppStore.shared.sendShortcutText(text, to: bot, openChat: openChat)
         if case .queued = progress { return .result(dialog: "Message queued for the offline computer.") }
         return .result(dialog: "Message sent.")

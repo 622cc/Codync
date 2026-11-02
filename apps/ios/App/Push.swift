@@ -85,10 +85,15 @@ final class PushRegistrar {
 
     /// nil until asked; false once turned off in the Settings app.
     func isAllowed() async -> Bool? {
-        switch await UNUserNotificationCenter.current().notificationSettings().authorizationStatus {
-        case .authorized, .provisional, .ephemeral: true
-        case .denied: false
-        default: nil
+        let status: UNAuthorizationStatus = await withCheckedContinuation { continuation in
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                continuation.resume(returning: settings.authorizationStatus)
+            }
+        }
+        switch status {
+        case .authorized, .provisional, .ephemeral: return true
+        case .denied: return false
+        default: return nil
         }
     }
 
@@ -132,8 +137,12 @@ final class PushRegistrar {
         }
         guard let token = deviceToken else {
             Task {
-                let settings = await UNUserNotificationCenter.current().notificationSettings()
-                if settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional { UIApplication.shared.registerForRemoteNotifications() }
+                let status: UNAuthorizationStatus = await withCheckedContinuation { continuation in
+                    UNUserNotificationCenter.current().getNotificationSettings { settings in
+                        continuation.resume(returning: settings.authorizationStatus)
+                    }
+                }
+                if status == .authorized || status == .provisional { UIApplication.shared.registerForRemoteNotifications() }
             }
             return
         }
@@ -168,6 +177,7 @@ final class LiveActivities {
     /// Simulator-only visual verification. No host, relay, or APNs request.
     func previewIfRequested() async {
         #if targetEnvironment(simulator)
+        guard #available(iOS 16.2, *) else { return }
         guard let status = ProcessInfo.processInfo.environment["CODYNC_ACTIVITY_PREVIEW"] else { return }
         for activity in Activity<BotActivityAttributes>.activities where activity.attributes.botId.hasPrefix("codync-design-preview-") {
             await activity.end(nil, dismissalPolicy: .immediate)
@@ -193,6 +203,7 @@ final class LiveActivities {
     func endAll() {
         requests.values.forEach { $0.cancel() }
         requests.removeAll()
+        guard #available(iOS 16.2, *) else { return }
         let ids = Set(Activity<BotActivityAttributes>.activities.map(\.id))
         Task.detached {
             for activity in Activity<BotActivityAttributes>.activities where ids.contains(activity.id) {
@@ -201,6 +212,7 @@ final class LiveActivities {
         }
     }
 
+    @available(iOS 16.2, *)
     private nonisolated static func find(_ ref: BotReference) -> Activity<BotActivityAttributes>? {
         BotActivityAttributes.shown(botId: ref.botId, computerId: ref.computerId)
     }
@@ -209,6 +221,7 @@ final class LiveActivities {
     /// it in the relay mailbox while the computer is offline, then follows the bot's own status.
     /// On a call with the bot, the activity stays up for the call and shows it.
     func sent(_ ref: BotReference, bot: Bot, progress: SendProgress, store: BotStore) {
+        guard #available(iOS 16.2, *) else { return }
         let onCall = CallActivity.isLive(botId: ref.botId)
         let status: String
         switch progress {
@@ -258,6 +271,7 @@ final class LiveActivities {
 
     /// Reattach token observers after a relaunch or connection replacement.
     func resume(with store: BotStore) {
+        guard #available(iOS 16.2, *) else { return }
         guard BotActivityAttributes.isOn else { return }
         endLeftoverCalls()
         guard let client = store.client else { return }
@@ -269,6 +283,7 @@ final class LiveActivities {
 
     /// A call the app was closed in the middle of leaves its fields on the activity: they go, and an activity with
     /// nothing else to show ends.
+    @available(iOS 16.2, *)
     private func endLeftoverCalls() {
         let over = Activity<BotActivityAttributes>.activities
             .filter { $0.content.state.call != nil && !CallActivity.isLive(botId: $0.attributes.botId) }.map(\.id)
@@ -280,6 +295,7 @@ final class LiveActivities {
         }
     }
 
+    @available(iOS 16.2, *)
     private func observe(_ activity: Activity<BotActivityAttributes>, client: HostClient) {
         requests[activity.id]?.cancel()
         requests[activity.id] = Task {
@@ -291,6 +307,7 @@ final class LiveActivities {
         }
     }
 
+    @available(iOS 16.2, *)
     private static func register(_ token: Data, activity: Activity<BotActivityAttributes>, client: HostClient) async {
         for attempt in 0..<3 {
             do {
@@ -312,6 +329,7 @@ final class LiveActivities {
 
     /// Local updates while the app is open; the computer pushes them otherwise.
     func update(_ ref: BotReference, bot: Bot) {
+        guard #available(iOS 16.2, *) else { return }
         guard let current = Self.find(ref) else { return }
         // Until the computer starts on the message, an idle bot just hasn't begun yet.
         let local = ["sending", "queued"].contains(current.content.state.status)
@@ -329,6 +347,7 @@ final class LiveActivities {
         Task.detached { await Self.apply(ref, state: state, end: !working) }
     }
 
+    @available(iOS 16.2, *)
     private nonisolated static func apply(_ ref: BotReference, state: BotActivityAttributes.ContentState, end: Bool) async {
         guard let activity = find(ref) else { return }
         if end {

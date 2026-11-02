@@ -317,8 +317,8 @@ private struct DemoPhone: View {
                 .offset(x: Self.size.width * (1 - detail))
         }
         .frame(width: Self.size.width, height: Self.size.height - 60, alignment: .top)
-        .background(Color(white: 0.12), in: UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20, style: .continuous))
-        .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20, style: .continuous))
+        .background(Color(white: 0.12), in: CodyncUI.UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20, style: .continuous))
+        .clipShape(CodyncUI.UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20, style: .continuous))
         .offset(y: 60 + (Self.size.height - 60) * (1 - sheet))
     }
 

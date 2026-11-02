@@ -154,7 +154,12 @@ final class AppStore {
         Analytics.shared.foregroundState = {
             let allowed = await PushRegistrar.shared.isAllowed()
             // Unreadable (WidgetKit's error carries nothing to act on): `app_opened` leaves the count out.
-            let widgets = try? await WidgetCenter.shared.currentConfigurations().count
+            let widgets: Int?
+            if #available(iOS 18.0, *) {
+                widgets = try? await WidgetCenter.shared.currentConfigurations().count
+            } else {
+                widgets = nil
+            }
             return (allowed.map { $0 ? .allowed : .denied } ?? .notAsked, widgets)
         }
         CrashReports.shared.start()
@@ -365,7 +370,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
     }
 
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
-                                          withCompletionHandler completionHandler: @escaping @Sendable () -> Void) {
+                                          withCompletionHandler completionHandler: @escaping () -> Void) {
         let info = response.notification.request.content.userInfo
         let ctx = info["ctx"] as? String
         let computerId = info["computerId"] as? String
@@ -448,6 +453,8 @@ enum BotsWidgetFeed {
         scope = currentScope
         WidgetCenter.shared.reloadTimelines(ofKind: "CodyncBots")
         WidgetCenter.shared.reloadTimelines(ofKind: "CodyncTeam")
-        ControlCenter.shared.reloadControls(ofKind: "CodyncLeadBot")
+        if #available(iOS 18.0, *) {
+            ControlCenter.shared.reloadControls(ofKind: "CodyncLeadBot")
+        }
     }
 }
