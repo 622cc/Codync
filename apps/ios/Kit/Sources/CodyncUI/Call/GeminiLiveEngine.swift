@@ -415,7 +415,7 @@ final class GeminiLiveEngine: VoiceEngine {
     // MARK: helpers
 
     /// Gemini's schema spells types in capitals (`OBJECT`, `STRING`).
-    private static func geminiSchema(_ schema: [String: Any]) -> [String: Any] {
+    private nonisolated static func geminiSchema(_ schema: [String: Any]) -> [String: Any] {
         var out: [String: Any] = [:]
         for (key, value) in schema {
             switch value {

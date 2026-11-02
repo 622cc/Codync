@@ -1,5 +1,7 @@
 import SwiftUI
 import CodyncKit
+import AVFAudio
+import AuthenticationServices
 @_exported import Perception
 
 // MARK: - iOS 16 View Compatibility Overloads
@@ -152,5 +154,127 @@ public extension TextField where Label == Text {
         self.init(title, text: text, axis: axis)
     }
 }
+
+// MARK: - Audio Session Permission Backport for iOS 16
+
+public extension AVAudioSession {
+    static func requestRecordPermissionAsync() async -> Bool {
+        await withCheckedContinuation { continuation in
+            sharedInstance().requestRecordPermission { granted in
+                continuation.resume(returning: granted)
+            }
+        }
+    }
+}
+
+// MARK: - Text ForegroundStyle Backport for iOS 16
+
+public extension Text {
+    @_disfavoredOverload
+    func foregroundStyle(_ color: Color) -> Text {
+        self.foregroundColor(color)
+    }
+}
+
+// MARK: - PresentationBackground, SafeAreaPadding, Transaction & Scroll Backports for iOS 16
+
+public extension View {
+    @_disfavoredOverload
+    func presentationBackground<S: ShapeStyle>(_ style: S) -> some View {
+        self
+    }
+
+    @_disfavoredOverload
+    func transaction<V: Equatable>(value: V, _ transform: @escaping (inout Transaction) -> Void) -> some View {
+        self.transaction(transform)
+    }
+
+    @_disfavoredOverload
+    func safeAreaPadding(_ insets: EdgeInsets) -> some View {
+        self.padding(insets)
+    }
+
+    @_disfavoredOverload
+    func onScrollVisibilityChange(threshold: Double = 0.5, _ action: @escaping (Bool) -> Void) -> some View {
+        self.onAppear { action(true) }
+            .onDisappear { action(false) }
+    }
+}
+
+// MARK: - Animation Completion Backport for iOS 16
+
+public func withAnimation<Result>(
+    _ animation: Animation? = .default,
+    _ body: () throws -> Result,
+    completion: @escaping () -> Void
+) rethrows -> Result {
+    let result = try withAnimation(animation, body)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+        completion()
+    }
+    return result
+}
+
+// MARK: - WebAuthenticationSession Backport for iOS 16
+
+public struct WebAuthenticationSession: Sendable {
+    public enum PreferredBrowserSession: Sendable {
+        case shared, ephemeral
+    }
+
+    public init() {}
+
+    @MainActor
+    public func authenticate(
+        using url: URL,
+        callbackURLScheme: String,
+        preferredBrowserSession: PreferredBrowserSession = .shared
+    ) async throws -> URL {
+        return try await withCheckedThrowingContinuation { continuation in
+            let session = ASWebAuthenticationSession(
+                url: url,
+                callbackURLScheme: callbackURLScheme
+            ) { callbackURL, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let callbackURL = callbackURL {
+                    continuation.resume(returning: callbackURL)
+                } else {
+                    continuation.resume(throwing: ASWebAuthenticationSessionError(.canceledLogin))
+                }
+            }
+            session.presentationContextProvider = KeyWindowPresentationProvider.shared
+            session.prefersEphemeralWebBrowserSession = (preferredBrowserSession == .ephemeral)
+            session.start()
+        }
+    }
+}
+
+final class KeyWindowPresentationProvider: NSObject, ASWebAuthenticationPresentationContextProviding, @unchecked Sendable {
+    static let shared = KeyWindowPresentationProvider()
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        for scene in UIApplication.shared.connectedScenes {
+            if let windowScene = scene as? UIWindowScene {
+                for window in windowScene.windows where window.isKeyWindow {
+                    return window
+                }
+            }
+        }
+        return ASPresentationAnchor()
+    }
+}
+
+private struct WebAuthSessionKey: EnvironmentKey {
+    static let defaultValue = WebAuthenticationSession()
+}
+
+public extension EnvironmentValues {
+    @_disfavoredOverload
+    var webAuthenticationSession: WebAuthenticationSession {
+        get { self[WebAuthSessionKey.self] }
+        set { self[WebAuthSessionKey.self] = newValue }
+    }
+}
+
 
 

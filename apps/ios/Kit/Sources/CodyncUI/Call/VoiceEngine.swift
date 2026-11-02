@@ -36,7 +36,7 @@ enum Reconnect {
 /// What carries a call's audio: on-device speech (default) or a realtime model on the user's own key.
 /// `CallView` only talks to this; nothing on the host changes.
 @MainActor
-protocol VoiceEngine: AnyObject, Observable {
+protocol VoiceEngine: AnyObject, Perceptible {
     var phase: VoicePhase { get }
     /// Microphone loudness, 0…1, while listening.
     var level: Float { get }

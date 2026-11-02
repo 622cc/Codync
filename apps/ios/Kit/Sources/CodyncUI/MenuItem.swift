@@ -67,13 +67,22 @@ private struct ContextActions: ViewModifier {
     func body(content: Content) -> some View {
         content.contextMenu {
             if let reactions {
-                ControlGroup {
-                    ForEach(reactions.emoji, id: \.self) { emoji in
-                        let chosen = reactions.chosen.contains(emoji)
-                        Toggle(isOn: Binding(get: { chosen }, set: { _ in reactions.toggle(emoji) })) { Text(emoji) }
+                if #available(iOS 17.0, *) {
+                    ControlGroup {
+                        ForEach(reactions.emoji, id: \.self) { emoji in
+                            let chosen = reactions.chosen.contains(emoji)
+                            Toggle(isOn: Binding(get: { chosen }, set: { _ in reactions.toggle(emoji) })) { Text(emoji) }
+                        }
+                    }
+                    .controlGroupStyle(.palette)
+                } else {
+                    ControlGroup {
+                        ForEach(reactions.emoji, id: \.self) { emoji in
+                            let chosen = reactions.chosen.contains(emoji)
+                            Toggle(isOn: Binding(get: { chosen }, set: { _ in reactions.toggle(emoji) })) { Text(emoji) }
+                        }
                     }
                 }
-                .controlGroupStyle(.palette)
             }
             ForEach(items()) { item in
                 if item.divider { Divider() }

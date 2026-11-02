@@ -350,7 +350,9 @@ private final class KeyProxyField: UITextField, UITextFieldDelegate {
         smartQuotesType = .no
         smartDashesType = .no
         smartInsertDeleteType = .no
-        inlinePredictionType = .no
+        if #available(iOS 17.0, *) {
+            inlinePredictionType = .no
+        }
         inputView = UIView()
         inputAssistantItem.leadingBarButtonGroups = []
         inputAssistantItem.trailingBarButtonGroups = []

@@ -100,13 +100,7 @@ final class VoiceProcessingAudio: CallAudio {
 
     private static let playFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 24000, channels: 1, interleaved: false)
 
-    func permission() async -> Bool {
-        await withCheckedContinuation { continuation in
-            AVAudioSession.sharedInstance().requestRecordPermission { granted in
-                continuation.resume(returning: granted)
-            }
-        }
-    }
+    func permission() async -> Bool { await AVAudioSession.requestRecordPermissionAsync() }
 
     func start(mic: @escaping @MainActor (String, Float) -> Void) throws {
         self.mic = mic

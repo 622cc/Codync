@@ -79,7 +79,7 @@ final class CloudSpeechEngine: VoiceEngine {
     }
 
     func start() async {
-        guard await AVAudioApplication.requestRecordPermission() else {
+        guard await AVAudioSession.requestRecordPermissionAsync() else {
             return fail("Allow the microphone for Codync in Settings to talk to your bots.", .microphone)
         }
         guard !ended else { return }
