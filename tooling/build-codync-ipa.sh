@@ -10,6 +10,9 @@ ENTITLEMENTS="$ROOT_DIR/tooling/TrollStore.entitlements"
 echo "==> 准备输出目录..."
 mkdir -p "$OUT_DIR"
 
+echo "==> 配置 Xcode 允许 Swift Macro 自动化编译..."
+defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES || true
+
 cd "$APPS_DIR"
 echo "==> 使用 xcodegen 生成适用于 iOS 16.0 的 Xcode 工程..."
 xcodegen generate --spec project.yml
@@ -21,6 +24,7 @@ xcodebuild clean archive \
   -configuration Release \
   -destination "generic/platform=iOS" \
   -archivePath "$ROOT_DIR/build/Codync.xcarchive" \
+  -skipMacroValidation \
   CODE_SIGNING_ALLOWED=NO \
   CODE_SIGNING_REQUIRED=NO \
   CODE_SIGN_IDENTITY="" \
