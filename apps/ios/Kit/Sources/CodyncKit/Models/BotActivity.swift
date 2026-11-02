@@ -13,9 +13,16 @@ public extension BotActivityAttributes {
     static var isOn: Bool { UserDefaults.standard.object(forKey: enabledKey) as? Bool ?? true }
 
     /// Whether a Live Activity may start: the in-app switch and iOS's.
-    static var mayStart: Bool { isOn && ActivityAuthorizationInfo().areActivitiesEnabled }
+    static var mayStart: Bool {
+        guard isOn else { return false }
+        if #available(iOS 16.1, *) {
+            return ActivityAuthorizationInfo().areActivitiesEnabled
+        }
+        return false
+    }
 
     /// The bot's Live Activity on screen, not one that ended.
+    @available(iOS 16.2, *)
     static func shown(botId: String, computerId: ComputerID) -> Activity<Self>? {
         Activity<Self>.activities.first {
             $0.attributes.botId == botId && $0.attributes.computerId == computerId

@@ -8,7 +8,7 @@ public typealias AppObservable = Perception.Perceptible
 // MARK: - EnvironmentStore Compatibility for iOS 16
 
 public final class EnvironmentStoreResolver: @unchecked Sendable {
-    public static var resolvers: [(Any.Type, (EnvironmentValues) -> Any?)] = []
+    nonisolated(unsafe) public static var resolvers: [(Any.Type, (EnvironmentValues) -> Any?)] = []
 
     public static func register<T>(_ type: T.Type, resolver: @escaping (EnvironmentValues) -> T?) {
         resolvers.append((type, resolver))
