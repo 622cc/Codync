@@ -147,10 +147,11 @@ struct WidgetGalleryView: View {
         }
         .background(Palette.background)
         .hidesSystemNavigationBar()
-        .navigationDestination(item: $page) { page in
-            switch page {
-            case .lockScreen: LockWidgetGalleryView()
-            }
+        .navigationDestination(isPresented: Binding(
+            get: { page != nil },
+            set: { if !$0 { page = nil } }
+        )) {
+            LockWidgetGalleryView()
         }
         .task {
             checkWidgets()
