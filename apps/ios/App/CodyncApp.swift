@@ -380,17 +380,18 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         // bridge can complete off the main thread even after MainActor.run.
         DispatchQueue.main.async {
             MainActor.assumeIsolated {
-                defer { completionHandler() }
                 if let kind = AnalyticsEvent.NotificationKind(category: category) {
                     Analytics.shared.capture(.notificationOpened(kind))
                 }
-                guard let ctx, let computerId, let botId else { return }
-                // Only open it in the account it was sent to, on a computer that account still has.
-                let accounts = AppStore.shared.accounts
-                guard ctx == accounts.storage.id, accounts.store(for: computerId) != nil else { return }
-                AppStore.shared.tab = .bots
-                accounts.selection = BotReference(accountId: accounts.accountId, computerId: computerId, botId: botId)
+                if let ctx, let computerId, let botId {
+                    let accounts = AppStore.shared.accounts
+                    if ctx == accounts.storage.id, accounts.store(for: computerId) != nil {
+                        AppStore.shared.tab = .bots
+                        accounts.selection = BotReference(accountId: accounts.accountId, computerId: computerId, botId: botId)
+                    }
+                }
             }
+            completionHandler()
         }
     }
 
