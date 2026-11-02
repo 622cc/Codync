@@ -144,7 +144,7 @@ public final class AppUpdates {
     public static let shared = AppUpdates()
     /// The version live in the App Store; nil until asked or when the lookup fails.
     public private(set) var store: String?
-    @ObservationIgnored private var askedAt: Date?
+    @PerceptionIgnored private var askedAt: Date?
     private var dismissedApp: String? = UserDefaults.standard.string(forKey: "dismissedAppUpdate")
 
     public init() {}

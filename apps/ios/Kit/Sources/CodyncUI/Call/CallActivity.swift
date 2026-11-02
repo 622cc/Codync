@@ -9,6 +9,7 @@ private let log = Logger(subsystem: "com.pokai.Codync", category: "Call")
 /// progress from the computer. Uses the bot's activity if one is up (a task it was given), else starts one for the call.
 /// The call's fields live here: every update of the activity merges them in (`withCall`), and they go back on after
 /// the computer's pushes, which replace its state without them.
+@available(iOS 16.2, *)
 @MainActor
 public final class CallActivity {
     public typealias State = BotActivityAttributes.ContentState

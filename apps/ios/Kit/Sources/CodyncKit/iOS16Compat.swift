@@ -30,8 +30,27 @@ public struct EnvironmentStore<Value>: DynamicProperty {
 
     public init(_ type: Value.Type) {}
 
+    public init<Wrapped>(_ type: Wrapped.Type) where Value == Optional<Wrapped> {}
+
     public var wrappedValue: Value {
         EnvironmentStoreResolver.resolve(Value.self, in: environment)
+    }
+}
+
+// MARK: - Audio Compatibility for iOS 16
+import AVFoundation
+
+public extension AVAudioSession.CategoryOptions {
+    static let allowBluetoothHFP: AVAudioSession.CategoryOptions = .allowBluetooth
+}
+
+public extension AVAudioSession {
+    static func requestRecordPermissionAsync() async -> Bool {
+        await withCheckedContinuation { continuation in
+            AVAudioSession.sharedInstance().requestRecordPermission { granted in
+                continuation.resume(returning: granted)
+            }
+        }
     }
 }
 

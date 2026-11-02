@@ -24,7 +24,7 @@ struct DictationService {
                 VoiceSettings.remember(status)
                 return status.configured(provider)
             },
-            allowMic: { await AVAudioApplication.requestRecordPermission() },
+            allowMic: { await AVAudioSession.requestRecordPermissionAsync() },
             openMic: { engine, heard in Dictation.openMic(engine, bufferSize: 2048) { MicTap.pcm16k(from: $0, out: heard) } },
             transcribe: { pcm, provider, model in
                 let said = try await Dictation.transcribe(pcm, provider: provider, on: model)
@@ -51,21 +51,21 @@ final class Dictation {
     /// Why the last dictation ended early (no network or microphone access), until the next.
     var failure: String?
     var needsKey = false
-    @ObservationIgnored private lazy var engine = AVAudioEngine()
-    @ObservationIgnored private var request: SFSpeechAudioBufferRecognitionRequest?
-    @ObservationIgnored private var task: SFSpeechRecognitionTask?
+    @PerceptionIgnored private lazy var engine = AVAudioEngine()
+    @PerceptionIgnored private var request: SFSpeechAudioBufferRecognitionRequest?
+    @PerceptionIgnored private var task: SFSpeechRecognitionTask?
     /// Recording for a provider: what the microphone heard (16 kHz mono PCM16), and whose computer transcribes it.
-    @ObservationIgnored private var recording: (provider: VoiceProvider, model: BotStore, pcm: Data)?
+    @PerceptionIgnored private var recording: (provider: VoiceProvider, model: BotStore, pcm: Data)?
     /// Changes the box's text: on-device words replace what follows `before`; a transcript goes after the box as it is then.
-    @ObservationIgnored private var edit: (((String) -> String) -> Void)?
+    @PerceptionIgnored private var edit: (((String) -> String) -> Void)?
     /// The box when dictation started.
-    @ObservationIgnored private var before = ""
+    @PerceptionIgnored private var before = ""
     /// A recording's transcription; `stop()` cancels it so no more pieces go out on the user's key.
-    @ObservationIgnored private var transcription: Task<Void, Never>?
+    @PerceptionIgnored private var transcription: Task<Void, Never>?
     /// Bumped per start and stop, so a start still waiting (key check, permission) or a late
     /// result from an earlier recognition is dropped.
-    @ObservationIgnored private var generation = 0
-    @ObservationIgnored private let service: DictationService
+    @PerceptionIgnored private var generation = 0
+    @PerceptionIgnored private let service: DictationService
 
     init(service: DictationService = .live) {
         self.service = service
@@ -80,7 +80,7 @@ final class Dictation {
     private static let inFlight = 3
 
     /// `said` after what's already in the box, with one space between.
-    static func join(_ before: String, _ said: String) -> String {
+    nonisolated static func join(_ before: String, _ said: String) -> String {
         if before.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return said }
         if said.isEmpty { return before }
         return before.last?.isWhitespace == true ? before + said : before + " " + said
@@ -149,7 +149,7 @@ final class Dictation {
     }
 
     private func recognize(generation: Int, edit: @escaping ((String) -> String) -> Void) async {
-        guard await AVAudioApplication.requestRecordPermission(), await Self.authorized(), generation == self.generation else { return }
+        guard await AVAudioSession.requestRecordPermissionAsync(), await Self.authorized(), generation == self.generation else { return }
         let recognizer = UserDefaults.standard.string(forKey: OnDeviceEngine.languageKey)
             .flatMap { $0.isEmpty ? nil : SFSpeechRecognizer(locale: Locale(identifier: $0)) } ?? SFSpeechRecognizer()
         guard let recognizer, recognizer.isAvailable else { return }
@@ -250,7 +250,8 @@ final class Dictation {
             for try await done in group { keep(done) }
             return texts
         }
-        return VoiceSettings.inReadersScript(texts.filter { !$0.isEmpty }.reduce("", join))
+        let joined = texts.filter { !$0.isEmpty }.reduce("", { Self.join($0, $1) })
+        return VoiceSettings.inReadersScript(joined)
     }
 
     private func recognized(_ text: String, final: Bool, generation: Int) {

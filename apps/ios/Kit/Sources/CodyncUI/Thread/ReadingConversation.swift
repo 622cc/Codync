@@ -1,4 +1,5 @@
 import SwiftUI
+import CodyncKit
 
 extension View {
     func readingConversation(_ botId: String) -> some View {

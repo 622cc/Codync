@@ -161,7 +161,7 @@ enum VoiceSettings {
     /// gpt-transcribe writes Chinese in Simplified characters whatever it's told: turn it back
     /// into Traditional for someone who reads Traditional (their first Chinese language, or a
     /// Traditional region when none is listed).
-    static func inReadersScript(_ text: String) -> String {
+    nonisolated static func inReadersScript(_ text: String) -> String {
         let chinese = Locale.preferredLanguages.lazy.map(Locale.Language.init(identifier:)).first { $0.languageCode == .chinese }
         let traditional = if let chinese { chinese.script == .hanTraditional }
             else { ["TW", "HK", "MO"].contains(Locale.current.region?.identifier ?? "") }

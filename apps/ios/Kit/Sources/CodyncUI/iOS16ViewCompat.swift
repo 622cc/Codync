@@ -87,3 +87,36 @@ extension View {
     }
 }
 
+// MARK: - Menu, Symbol & Scroll Backports for iOS 16
+
+public struct CompatMenuActionDismissBehavior: Sendable {
+    public static let disabled = CompatMenuActionDismissBehavior()
+    public static let automatic = CompatMenuActionDismissBehavior()
+}
+
+public struct CompatSymbolEffect: Sendable {
+    public static let pulse = CompatSymbolEffect()
+    public static let bounce = CompatSymbolEffect()
+}
+
+public struct CompatSymbolEffectOptions: Sendable {
+    public static let repeating = CompatSymbolEffectOptions()
+}
+
+public extension View {
+    @_disfavoredOverload
+    func menuActionDismissBehavior(_ behavior: CompatMenuActionDismissBehavior) -> some View {
+        self
+    }
+
+    @_disfavoredOverload
+    func symbolEffect(_ effect: CompatSymbolEffect, options: CompatSymbolEffectOptions = .repeating, isActive: Bool = true) -> some View {
+        self
+    }
+
+    @_disfavoredOverload
+    func defaultScrollAnchor(_ anchor: UnitPoint?) -> some View {
+        self
+    }
+}
+
